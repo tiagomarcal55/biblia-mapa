@@ -1,0 +1,864 @@
+{
+  "version": "1.0",
+  "generated": "2026-05-24T18:50:12.973Z",
+  "count": 42,
+  "nodes": [
+    {
+      "id": "EVT-0001",
+      "type": "event",
+      "title": "Criação",
+      "slug": "criacao",
+      "date_start": -4026,
+      "date_end": -4026,
+      "date_precision": "approximate",
+      "date_display": "~4026 a.C.",
+      "uncertainty_years": 100,
+      "importance": 10,
+      "tags": [
+        "criacao",
+        "genesis"
+      ],
+      "scripture_refs": [
+        "Gênesis 1:1"
+      ],
+      "description": "Deus cria os céus e a terra em seis dias. Adão e Eva são criados como o ápice da criação, com o dom do livre-arbítrio."
+    },
+    {
+      "id": "PLACE-0001",
+      "type": "place",
+      "title": "Jardim do Éden",
+      "slug": "jardim-eden",
+      "date_start": -4026,
+      "date_end": -4026,
+      "date_precision": "approximate",
+      "date_display": "~4026 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "eden",
+        "criacao"
+      ],
+      "description": "O lar original do primeiro casal humano criado por Deus, localizado no Oriente Médio."
+    },
+    {
+      "id": "EVT-0002",
+      "type": "event",
+      "title": "Dilúvio de Noé",
+      "slug": "diluvio",
+      "date_start": -2370,
+      "date_end": -2369,
+      "date_precision": "approximate",
+      "date_display": "~2370 a.C.",
+      "uncertainty_years": 50,
+      "importance": 10,
+      "tags": [
+        "noe",
+        "diluvio"
+      ],
+      "scripture_refs": [
+        "Gênesis 7:11"
+      ],
+      "description": "Jeová Deus traz um dilúvio global sobre a Terra para purificá-la da maldade. Noé, sua família e casais de animais são preservados na Arca."
+    },
+    {
+      "id": "EVT-0003",
+      "type": "event",
+      "title": "Torre de Babel",
+      "slug": "torre-babel",
+      "date_start": -2269,
+      "date_end": -2269,
+      "date_precision": "approximate",
+      "date_display": "~2269 a.C.",
+      "uncertainty_years": 50,
+      "importance": 9,
+      "tags": [
+        "babel",
+        "linguas"
+      ],
+      "description": "A humanidade tenta erguer uma grande torre para desafiar a vontade divina. Deus confunde os idiomas e os dispersa."
+    },
+    {
+      "id": "EVT-0004",
+      "type": "event",
+      "title": "Chamado de Abraão",
+      "slug": "chamado-abraao",
+      "date_start": -2018,
+      "date_end": -2018,
+      "date_precision": "year",
+      "date_display": "2018 a.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "abraao",
+        "alianca"
+      ],
+      "scripture_refs": [
+        "Gênesis 12:1-3"
+      ],
+      "description": "Abrão obedece à ordem divina e deixa Ur dos Caldeus em direção a Canaã. Deus estabelece com ele uma aliança solene."
+    },
+    {
+      "id": "CHAR-0001",
+      "type": "character",
+      "title": "Moisés",
+      "slug": "moises",
+      "date_start": -1593,
+      "date_end": -1473,
+      "date_precision": "year",
+      "date_display": "1593–1473 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "moises",
+        "exodo",
+        "lei"
+      ],
+      "description": "Líder escolhido por Deus para guiar Israel para fora do Egito e receber as tábuas da Lei no Sinai."
+    },
+    {
+      "id": "EVT-0005",
+      "type": "event",
+      "title": "Êxodo do Egito",
+      "slug": "exodo",
+      "date_start": -1513,
+      "date_end": -1513,
+      "date_precision": "year",
+      "date_display": "1513 a.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "moises",
+        "exodo",
+        "egipto"
+      ],
+      "scripture_refs": [
+        "Êxodo 14:21-22"
+      ],
+      "description": "Moisés lidera os israelitas para fora da escravidão do Egito, atravessando milagrosamente o Mar Vermelho em terra seca."
+    },
+    {
+      "id": "EVT-0006",
+      "type": "event",
+      "title": "Lei no Sinai",
+      "slug": "lei-sinai",
+      "date_start": -1513,
+      "date_end": -1513,
+      "date_precision": "year",
+      "date_display": "1513 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "moises",
+        "lei",
+        "sinai"
+      ],
+      "scripture_refs": [
+        "Êxodo 19:1"
+      ],
+      "description": "Jeová Deus entrega a Lei e os Dez Mandamentos ao povo de Israel por intermédio de Moisés no Monte Sinai."
+    },
+    {
+      "id": "EVT-0007",
+      "type": "event",
+      "title": "Conquista de Canaã",
+      "slug": "conquista-canaa",
+      "date_start": -1473,
+      "date_end": -1467,
+      "date_precision": "year",
+      "date_display": "1473 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "josue",
+        "canaa"
+      ],
+      "scripture_refs": [
+        "Josué 3:14-17"
+      ],
+      "description": "Sob a liderança de Josué, a nova geração de Israel atravessa o rio Jordão e inicia a conquista da Terra Prometida."
+    },
+    {
+      "id": "PER-0001",
+      "type": "period",
+      "title": "Período dos Juízes",
+      "slug": "periodo-juizes",
+      "date_start": -1450,
+      "date_end": -1117,
+      "date_precision": "year",
+      "date_display": "1450–1117 a.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "juizes",
+        "israel"
+      ],
+      "description": "Período em que juízes fiéis libertavam Israel da opressão de nações vizinhas."
+    },
+    {
+      "id": "EVT-0008",
+      "type": "event",
+      "title": "Reinado de Saul",
+      "slug": "reinado-saul",
+      "date_start": -1117,
+      "date_end": -1077,
+      "date_precision": "year",
+      "date_display": "1117 a.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "saul",
+        "rei",
+        "israel"
+      ],
+      "scripture_refs": [
+        "1 Samuel 10:1"
+      ],
+      "description": "Saul é ungido pelo profeta Samuel como o primeiro rei de Israel unido."
+    },
+    {
+      "id": "PER-0002",
+      "type": "period",
+      "title": "Monarquia Unida",
+      "slug": "monarquia-unida",
+      "date_start": -1117,
+      "date_end": -997,
+      "date_precision": "year",
+      "date_display": "1117–997 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "monarquia",
+        "saul",
+        "davi",
+        "salomao"
+      ],
+      "description": "O apogeu da nação de Israel sob o governo unido dos reis Saul, Davi e Salomão."
+    },
+    {
+      "id": "CHAR-0002",
+      "type": "character",
+      "title": "Davi",
+      "slug": "davi",
+      "date_start": -1107,
+      "date_end": -1037,
+      "date_precision": "year",
+      "date_display": "1107–1037 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "davi",
+        "rei",
+        "salmos"
+      ],
+      "description": "O segundo rei de Israel, descrito como um homem segundo o coração de Deus e ancestral direto de Jesus Cristo."
+    },
+    {
+      "id": "EVT-0009",
+      "type": "event",
+      "title": "Davi é Ungido Rei",
+      "slug": "davi-ungido",
+      "date_start": -1077,
+      "date_end": -1077,
+      "date_precision": "year",
+      "date_display": "1077 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "davi",
+        "rei",
+        "israel"
+      ],
+      "scripture_refs": [
+        "2 Samuel 2:4"
+      ],
+      "description": "O jovem Davi é ungido pelo profeta Samuel como o futuro rei de Israel por escolha direta de Jeová."
+    },
+    {
+      "id": "EVT-0010",
+      "type": "event",
+      "title": "Salomão, o Rei",
+      "slug": "salomao-rei",
+      "date_start": -1037,
+      "date_end": -998,
+      "date_precision": "year",
+      "date_display": "1037 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "salomao",
+        "sabedoria",
+        "israel"
+      ],
+      "scripture_refs": [
+        "1 Reis 2:12"
+      ],
+      "description": "Salomão assume o trono de seu pai, Davi, iniciando um reinado marcado por sabedoria e prosperidade."
+    },
+    {
+      "id": "EVT-0011",
+      "type": "event",
+      "title": "Construção do Templo",
+      "slug": "construcao-templo",
+      "date_start": -1034,
+      "date_end": -1027,
+      "date_precision": "year",
+      "date_display": "1034 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "templo",
+        "salomao",
+        "jerusalem"
+      ],
+      "scripture_refs": [
+        "1 Reis 6:1"
+      ],
+      "description": "Salomão constrói o majestoso templo de Jerusalém dedicado ao culto de Jeová Deus."
+    },
+    {
+      "id": "PLACE-0002",
+      "type": "place",
+      "title": "Jerusalém",
+      "slug": "jerusalem",
+      "date_start": -1000,
+      "date_end": 100,
+      "date_precision": "year",
+      "date_display": "~1000 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "jerusalem",
+        "cidade",
+        "capital"
+      ],
+      "description": "A cidade de Davi, capital do reino unido de Israel e o centro espiritual de reconstrução pós-exílio."
+    },
+    {
+      "id": "EVT-0012",
+      "type": "event",
+      "title": "Divisão do Reino",
+      "slug": "divisao-reino",
+      "date_start": -997,
+      "date_end": -997,
+      "date_precision": "year",
+      "date_display": "997 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "divisao",
+        "jeroboao",
+        "roboao"
+      ],
+      "description": "Após a morte de Salomão, a nação se divide no Reino do Norte (Israel) e Reino do Sul (Judá)."
+    },
+    {
+      "id": "EVT-0013",
+      "type": "event",
+      "title": "Profecia de Isaías",
+      "slug": "profecia-isaias",
+      "date_start": -778,
+      "date_end": -732,
+      "date_precision": "year",
+      "date_display": "~778 a.C.",
+      "uncertainty_years": 5,
+      "importance": 8,
+      "tags": [
+        "isaias",
+        "profecia"
+      ],
+      "scripture_refs": [
+        "Isaías 1:1"
+      ],
+      "description": "Isaías profetiza ativamente em Judá, trazendo fortes alertas morais e profecias sobre o Messias."
+    },
+    {
+      "id": "CHAR-0003",
+      "type": "character",
+      "title": "Daniel",
+      "slug": "daniel",
+      "date_start": -620,
+      "date_end": -536,
+      "date_precision": "year",
+      "date_display": "~620–536 a.C.",
+      "uncertainty_years": 5,
+      "importance": 8,
+      "tags": [
+        "daniel",
+        "profecia",
+        "babilonia"
+      ],
+      "description": "Profeta fiel exilado em Babilônia, conhecido por sua integridade na cova dos leões e visões proféticas globais."
+    },
+    {
+      "id": "EVT-0014",
+      "type": "event",
+      "title": "Cativeiro Babilônico",
+      "slug": "cativeiro-babilonico",
+      "date_start": -617,
+      "date_end": -537,
+      "date_precision": "year",
+      "date_display": "617 a.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "babilonia",
+        "cativeiro",
+        "exilio"
+      ],
+      "scripture_refs": [
+        "2 Reis 24:1"
+      ],
+      "description": "O Reino de Judá é levado ao exílio em Babilônia pelo rei Nabucodonosor."
+    },
+    {
+      "id": "EVT-0015",
+      "type": "event",
+      "title": "Queda de Jerusalém",
+      "slug": "queda-jerusalem",
+      "date_start": -607,
+      "date_end": -607,
+      "date_precision": "year",
+      "date_display": "607 a.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jerusalem",
+        "babilonia",
+        "destruicao"
+      ],
+      "scripture_refs": [
+        "2 Reis 25:1-9"
+      ],
+      "description": "Jerusalém e seu templo são completamente destruídos pelos exércitos de Babilônia em 607 a.C."
+    },
+    {
+      "id": "EVT-0016",
+      "type": "event",
+      "title": "Decreto de Ciro",
+      "slug": "decreto-ciro",
+      "date_start": -537,
+      "date_end": -537,
+      "date_precision": "year",
+      "date_display": "537 a.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "ciro",
+        "persia",
+        "retorno"
+      ],
+      "scripture_refs": [
+        "Esdras 1:1-4"
+      ],
+      "description": "Ciro, o Grande, emite o decreto histórico permitindo o retorno dos judeus exilados para reconstruir Jerusalém."
+    },
+    {
+      "id": "EVT-0017",
+      "type": "event",
+      "title": "Reconstrução do Templo",
+      "slug": "reconstrucao-templo",
+      "date_start": -537,
+      "date_end": -515,
+      "date_precision": "year",
+      "date_display": "537–515 a.C.",
+      "uncertainty_years": 0,
+      "importance": 8,
+      "tags": [
+        "templo",
+        "esdras",
+        "zoorobabel"
+      ],
+      "scripture_refs": [
+        "Esdras 3:8"
+      ],
+      "description": "Os exilados retornam sob a liderança de Zorobabel e concluem a reconstrução do segundo templo."
+    },
+    {
+      "id": "PER-0003",
+      "type": "period",
+      "title": "Período Intertestamental",
+      "slug": "intertestamental",
+      "date_start": -433,
+      "date_end": -2,
+      "date_precision": "year",
+      "date_display": "433–2 a.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "intertestamental",
+        "silencio"
+      ],
+      "description": "Intervalo cronológico sem novos livros bíblicos inspirados, entre Malaquias e o nascimento de Jesus."
+    },
+    {
+      "id": "EVT-0018",
+      "type": "event",
+      "title": "Nascimento de Jesus",
+      "slug": "nascimento-jesus",
+      "date_start": -2,
+      "date_end": -2,
+      "date_precision": "year",
+      "date_display": "~2 a.C.",
+      "uncertainty_years": 1,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "nascimento",
+        "belem"
+      ],
+      "scripture_refs": [
+        "Lucas 2:1-7",
+        "Mateus 2:1"
+      ],
+      "description": "Jesus nasce em Belém da Judeia, cumprindo profecias bíblicas de que o Messias viria da linhagem de Davi."
+    },
+    {
+      "id": "CHAR-0004",
+      "type": "character",
+      "title": "João Batista",
+      "slug": "joao-batista",
+      "date_start": -1,
+      "date_end": 32,
+      "date_precision": "year",
+      "date_display": "~1 a.C.–32 d.C.",
+      "uncertainty_years": 1,
+      "importance": 8,
+      "tags": [
+        "joao",
+        "batista",
+        "precursor"
+      ],
+      "description": "O precursor do Messias, batizando Jesus no rio Jordão e preparando o caminho para seu ministério."
+    },
+    {
+      "id": "EVT-0019",
+      "type": "event",
+      "title": "Batismo de Jesus",
+      "slug": "batismo-jesus",
+      "date_start": 29.25,
+      "date_end": 29.25,
+      "date_precision": "month",
+      "date_display": "29 d.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "jesus",
+        "batismo",
+        "jordao"
+      ],
+      "scripture_refs": [
+        "Mateus 3:13-17",
+        "Marcos 1:9-11"
+      ],
+      "description": "Jesus é batizado por João Batista no rio Jordão, sendo ungido com espírito santo como o Messias."
+    },
+    {
+      "id": "PER-0004",
+      "type": "period",
+      "title": "Ministério de Jesus",
+      "slug": "ministerio-jesus",
+      "date_start": 29.25,
+      "date_end": 33.5,
+      "date_precision": "month",
+      "date_display": "29–33 d.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "ministerio"
+      ],
+      "description": "Período intensivo de pregação e milagres de Jesus na Judeia, Galileia e Samaria."
+    },
+    {
+      "id": "EVT-0020",
+      "type": "event",
+      "title": "Sermão do Monte",
+      "slug": "sermao-monte",
+      "date_start": 30,
+      "date_end": 30,
+      "date_precision": "year",
+      "date_display": "~30 d.C.",
+      "uncertainty_years": 1,
+      "importance": 8,
+      "tags": [
+        "jesus",
+        "sermao",
+        "ministerio"
+      ],
+      "scripture_refs": [
+        "Mateus 5:1-7:29"
+      ],
+      "description": "Jesus profere o famoso Sermão do Monte, estabelecendo princípios profundos sobre o Reino de Deus."
+    },
+    {
+      "id": "EVT-0021",
+      "type": "event",
+      "title": "Transfiguração",
+      "slug": "transfiguracao",
+      "date_start": 32,
+      "date_end": 32,
+      "date_precision": "year",
+      "date_display": "~32 d.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "jesus",
+        "transfiguracao"
+      ],
+      "scripture_refs": [
+        "Mateus 17:1-9"
+      ],
+      "description": "Jesus se transfigura diante de Pedro, Tiago e João em um monte alto, confirmando sua glória real."
+    },
+    {
+      "id": "EVT-0022",
+      "type": "event",
+      "title": "Crucificação de Jesus",
+      "slug": "crucificacao-de-jesus",
+      "date_start": 33.25,
+      "date_end": 33.25,
+      "date_precision": "day",
+      "date_display": "33 d.C. (Nisan 14)",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "ministerio",
+        "pascoa"
+      ],
+      "scripture_refs": [
+        "Mateus 27:32-56",
+        "Marcos 15:21-41",
+        "Lucas 23:26-49",
+        "João 19:17-37"
+      ],
+      "related_ids": [
+        "EVT-0023",
+        "EVT-0019",
+        "CHAR-0004"
+      ],
+      "description": "Jesus é crucificado no madeiro de tortura fora dos muros de Jerusalém, no dia 14 de Nisan do ano 33 d.C. Ele morre como sacrifício pelos pecados da humanidade, cumprindo as Escrituras Messiânicas.\n\nPilatos inscreve \"JESUS O NAZARENO, O REI DOS JUDEUS\" em três idiomas acima da cabeça de Jesus. Às três horas da tarde, Jesus exclama: *\"Está cumprido!\"* e entrega o espírito.\n\nA cortina do Templo se rasga de cima a baixo, e um terremoto sacode Jerusalém.\n\n> Este evento central da nossa fé mostra o amor insurmontável de Jeová e Jesus por nós. Baseado em publicações oficiais de jw.org."
+    },
+    {
+      "id": "EVT-0022",
+      "type": "event",
+      "title": "Morte de Jesus (Resgate)",
+      "slug": "morte-de-jesus-resgate",
+      "date_start": 33.25,
+      "date_end": 33.25,
+      "date_precision": "day",
+      "date_display": "33 d.C. (Nisan 14)",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "resgate",
+        "pascoa"
+      ],
+      "scripture_refs": [
+        "Mateus 27:32-56",
+        "Marcos 15:21-41",
+        "Lucas 23:26-49",
+        "João 19:17-37"
+      ],
+      "related_ids": [
+        "EVT-0023",
+        "EVT-0019",
+        "CHAR-0004"
+      ],
+      "description": "Jesus morre no madeiro de tortura fora dos muros de Jerusalém, no dia 14 de Nisan do ano 33 d.C. Ele entrega sua vida perfeita como resgate pelos pecados da humanidade, cumprindo perfeitamente as profecias messiânicas.\n\nPilatos inscreve o título \"JESUS, O NAZARENO, O REI DOS JUDEUS\" em três idiomas (hebraico, latim e grego) acima da cabeça de Jesus, no madeiro. Por volta das três horas da tarde, Jesus exclama: *\"Está consumado!\"* (ou *\"Está cumprido!\"*), entrega o seu espírito e falece.\n\nNaquele momento, a cortina do santuário do Templo se rasga em duas partes, de cima a baixo, e um forte terremoto sacode Jerusalém e arredores.\n\n> Este evento é a maior demonstração de amor de Jeová Deus e de Jesus Cristo pela humanidade."
+    },
+    {
+      "id": "EVT-0022",
+      "type": "event",
+      "title": "Morte de Jesus (Resgate)",
+      "slug": "morte-jesus-resgate",
+      "date_start": 33.25,
+      "date_end": 33.25,
+      "date_precision": "day",
+      "date_display": "33 d.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "morte",
+        "resgate",
+        "madeiro-tortura",
+        "pascoa"
+      ],
+      "scripture_refs": [
+        "Mateus 27:32-56",
+        "Marcos 15:21-41",
+        "Lucas 23:26-49",
+        "João 19:17-37"
+      ],
+      "description": "Jesus morre no madeiro de tortura como sacrifício de resgate pelos pecados da humanidade, cumprindo as profecias messiânicas."
+    },
+    {
+      "id": "EVT-0023",
+      "type": "event",
+      "title": "Ressurreição",
+      "slug": "ressurreicao",
+      "date_start": 33.26,
+      "date_end": 33.26,
+      "date_precision": "day",
+      "date_display": "33 d.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jesus",
+        "ressurreicao"
+      ],
+      "scripture_refs": [
+        "Mateus 28:1-10",
+        "João 20:1-18"
+      ],
+      "description": "No terceiro dia após sua morte, Jesus ressuscita — garantia da ressurreição futura para toda a humanidade."
+    },
+    {
+      "id": "EVT-0024",
+      "type": "event",
+      "title": "Pentecostes",
+      "slug": "pentecostes",
+      "date_start": 33.4,
+      "date_end": 33.4,
+      "date_precision": "month",
+      "date_display": "33 d.C.",
+      "uncertainty_years": 0,
+      "importance": 9,
+      "tags": [
+        "espirito",
+        "pentecostes",
+        "igreja"
+      ],
+      "scripture_refs": [
+        "Atos 2:1-41"
+      ],
+      "description": "O espírito santo é derramado sobre os discípulos em Jerusalém no dia de Pentecostes, marcando o início da pregação cristã organizada."
+    },
+    {
+      "id": "EVT-0025",
+      "type": "event",
+      "title": "Conversão de Paulo",
+      "slug": "conversao-paulo",
+      "date_start": 34,
+      "date_end": 34,
+      "date_precision": "year",
+      "date_display": "~34 d.C.",
+      "uncertainty_years": 1,
+      "importance": 8,
+      "tags": [
+        "paulo",
+        "conversao",
+        "damasco"
+      ],
+      "scripture_refs": [
+        "Atos 9:1-19"
+      ],
+      "description": "Saulo de Tarso tem uma visão milagrosa de Jesus ressuscitado na estrada de Damasco e se converte ao cristianismo."
+    },
+    {
+      "id": "EVT-0026",
+      "type": "event",
+      "title": "1ª Viagem Missionária",
+      "slug": "viagem-1",
+      "date_start": 47,
+      "date_end": 48,
+      "date_precision": "year",
+      "date_display": "47–48 d.C.",
+      "uncertainty_years": 1,
+      "importance": 7,
+      "tags": [
+        "paulo",
+        "missao"
+      ],
+      "scripture_refs": [
+        "Atos 13:1-14:28"
+      ],
+      "description": "Paulo inicia sua primeira jornada missionária pela Ásia Menor, estabelecendo congregações cristãs."
+    },
+    {
+      "id": "EVT-0027",
+      "type": "event",
+      "title": "Concílio de Jerusalém",
+      "slug": "concilio-jerusalem",
+      "date_start": 49,
+      "date_end": 49,
+      "date_precision": "year",
+      "date_display": "49 d.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "paulo",
+        "concilio",
+        "jerusalem"
+      ],
+      "scripture_refs": [
+        "Atos 15:1-35"
+      ],
+      "description": "Os apóstolos e anciãos se reúnem em Jerusalém para decidir a questão da circuncisão entre os cristãos não judeus."
+    },
+    {
+      "id": "EVT-0028",
+      "type": "event",
+      "title": "2ª Viagem Missionária",
+      "slug": "viagem-2",
+      "date_start": 49,
+      "date_end": 52,
+      "date_precision": "year",
+      "date_display": "49–52 d.C.",
+      "uncertainty_years": 0,
+      "importance": 7,
+      "tags": [
+        "paulo",
+        "missao"
+      ],
+      "scripture_refs": [
+        "Atos 15:36-18:22"
+      ],
+      "description": "Paulo viaja pela Grécia e Ásia Menor em sua segunda viagem, fortalecendo a fé cristã."
+    },
+    {
+      "id": "EVT-0029",
+      "type": "event",
+      "title": "Destruição de Jerusalém",
+      "slug": "destruicao-jerusalem-70",
+      "date_start": 70,
+      "date_end": 70,
+      "date_precision": "year",
+      "date_display": "70 d.C.",
+      "uncertainty_years": 0,
+      "importance": 10,
+      "tags": [
+        "jerusalem",
+        "destruicao",
+        "roma"
+      ],
+      "scripture_refs": [
+        "Lucas 21:20-24"
+      ],
+      "description": "Jerusalém e seu templo são destruídos pelos exércitos romanos sob General Tito, em cumprimento exato da profecia de Jesus."
+    },
+    {
+      "id": "EVT-0030",
+      "type": "event",
+      "title": "Apocalipse (Revelação)",
+      "slug": "apocalipse",
+      "date_start": 96,
+      "date_end": 96,
+      "date_precision": "year",
+      "date_display": "~96 d.C.",
+      "uncertainty_years": 2,
+      "importance": 10,
+      "tags": [
+        "joao",
+        "apocalipse",
+        "profecias"
+      ],
+      "scripture_refs": [
+        "Apocalipse 1:1-3"
+      ],
+      "description": "O apóstolo João recebe visões proféticas impressionantes registradas no livro de Apocalipse (Revelação)."
+    }
+  ]
+}

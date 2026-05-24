@@ -1,0 +1,7 @@
+/* App.css — Basic overrides */
+#app-root {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
