@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/jw-api/:path*",
+      "destination": "https://www.jw.org/:path*"
+    },
+    {
+      "source": "/wol-api/:path*",
+      "destination": "https://wol.jw.org/:path*"
+    },
+    {
+      "source": "/((?!assets/|favicon.ico|.*\\.js|.*\\.css).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

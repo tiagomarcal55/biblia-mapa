@@ -667,12 +667,15 @@ function ZoomableImage({ images, initialIdx, onClose }: { images: string[]; init
   const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
+    let timer: number | undefined;
     if (scale === 1 && (pos.x !== 0 || pos.y !== 0)) {
-      const timer = window.setTimeout(() => {
+      timer = window.setTimeout(() => {
         setPos({ x: 0, y: 0 });
       }, 0);
-      return () => window.clearTimeout(timer);
     }
+    return () => {
+      if (timer) window.clearTimeout(timer);
+    };
   }, [scale, pos.x, pos.y]);
 
   const resetZoom = () => {
