@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { Canvas }          from './components/Canvas';
 import { Toolbar }         from './components/Toolbar';
@@ -12,10 +12,10 @@ const NarrativePlayer = lazy(() => import('./components/NarrativePlayer').then(m
 import { useTimelineStore } from './store/timeline.store';
 import { MOCK_BIBLICAL_NODES } from './data/mock-nodes';
 import { loadTimelineIndex }   from './lib/data/parser';
-import { TYPE_FILTER_OPTIONS, countNodesByTypes } from './lib/timeline-filters';
-import { getThemeMode, normalizeTheme } from './lib/themes';
+import { TYPE_FILTER_OPTIONS } from './lib/timeline-filters';
+import { normalizeTheme, THEME_OPTIONS } from './lib/themes';
 import { useBreakpoint }       from './hooks/useBreakpoint';
-import { X, Search, Filter, Settings, Sun, Moon } from 'lucide-react';
+import { X, Search, Settings, Database, Cloud, Upload, Download } from 'lucide-react';
 import type { TimelineNode } from './types';
 
 type AnimationLevel = 'full' | 'reduced' | 'none';
@@ -280,11 +280,15 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
   const searchQuery    = useTimelineStore(s => s.searchQuery);
   const setSearchQuery = useTimelineStore(s => s.setSearchQuery);
   const filteredNodes  = useTimelineStore(s => s.filteredNodes);
-  const nodes          = useTimelineStore(s => s.nodes);
   const selectNode     = useTimelineStore(s => s.selectNode);
   const setFilter      = useTimelineStore(s => s.setFilter);
   const settings       = useTimelineStore(s => s.settings);
   const updateSettings = useTimelineStore(s => s.updateSettings);
+  const activeFilters  = useTimelineStore(s => s.activeFilters);
+  const githubToken = useTimelineStore(s => s.githubToken);
+  const setGithubToken = useTimelineStore(s => s.setGithubToken);
+  const syncCloud = useTimelineStore(s => s.syncCloud);
+  const isSyncing = useTimelineStore(s => s.isSyncing);
 
   const openNode = (node: TimelineNode) => {
     selectNode(node.id);
@@ -296,7 +300,24 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
 
   const applyTypeFilter = (types: string[]) => {
     setFilter('types', types);
-    onClose();
+  };
+
+  const isActiveType = (types: readonly string[]) => {
+    if (types.length === 0) return activeFilters.types.length === 0;
+    return types.length === activeFilters.types.length
+      && types.every(type => activeFilters.types.includes(type));
+  };
+
+  const getThemePreview = (themeId: string) => {
+    const previews: Record<string, string> = {
+      'mesh-dark': 'radial-gradient(circle at 24% 80%, #1d4ed8 0%, transparent 42%), radial-gradient(circle at 82% 18%, #92400e 0%, transparent 40%), #030712',
+      'mesh-light': 'radial-gradient(circle at 24% 80%, #93c5fd 0%, transparent 42%), radial-gradient(circle at 82% 18%, #fcd34d 0%, transparent 40%), #f3f4f6',
+      'cartography-dark': 'repeating-radial-gradient(circle at 70% 35%, rgba(125,160,138,.28) 0 1px, transparent 1px 9px), linear-gradient(135deg, #071016, #10251d)',
+      'cartography-light': 'repeating-radial-gradient(circle at 68% 38%, rgba(84,107,89,.28) 0 1px, transparent 1px 9px), linear-gradient(135deg, #eef3ea, #dbe8d5)',
+      'papyrus-dark': 'radial-gradient(circle at 22% 80%, rgba(216,160,61,.32), transparent 44%), linear-gradient(135deg, #120d08, #2b1d0f)',
+      'papyrus-light': 'radial-gradient(circle at 20% 78%, rgba(161,98,7,.22), transparent 44%), linear-gradient(135deg, #eadbbd, #fff7e5)',
+    };
+    return previews[themeId];
   };
 
   const results = filteredNodes.slice(0, 12);
@@ -333,22 +354,22 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
       >
         <div style={{ color: '#fbbf24', display: 'flex' }}>
           {activeTab === 'search' && <Search size={17} />}
-          {activeTab === 'filters' && <Filter size={17} />}
           {activeTab === 'settings' && <Settings size={17} />}
+          {activeTab === 'library' && <Database size={17} />}
         </div>
         {activeTab === 'search' && (
           <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
-            Busca
-          </h2>
-        )}
-        {activeTab === 'filters' && (
-          <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
-            Filtros
+            Busca e Filtros
           </h2>
         )}
         {activeTab === 'settings' && (
           <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
-            Configuracoes
+            Configurações
+          </h2>
+        )}
+        {activeTab === 'library' && (
+          <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
+            Biblioteca
           </h2>
         )}
         <div style={{ flex: 1 }} />
@@ -379,6 +400,31 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
       >
         {activeTab === 'search' && (
           <div id="mobile-search-panel" className="mobile-search-panel" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', overflowX: 'auto', gap: '8px', paddingBottom: '4px', WebkitOverflowScrolling: 'touch' }}>
+              {TYPE_FILTER_OPTIONS.map(option => {
+                const active = isActiveType(option.types);
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => applyTypeFilter([...option.types])}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '20px',
+                      whiteSpace: 'nowrap',
+                      background: active ? 'var(--accent-primary)' : 'var(--border-6)',
+                      color: active ? '#fff' : 'var(--text-sec)',
+                      border: '1px solid',
+                      borderColor: active ? 'var(--accent-primary)' : 'var(--border-10)',
+                      fontSize: '12px',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+
             <div
               className="mobile-search-box"
               style={{
@@ -397,8 +443,7 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
                 type="search"
                 value={searchQuery}
                 onChange={event => setSearchQuery(event.target.value)}
-                placeholder="Buscar eventos, pessoas, lugares..."
-                autoFocus
+                placeholder="Buscar eventos, pessoas..."
                 style={{
                   flex: 1,
                   border: 'none',
@@ -420,67 +465,169 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
               ))}
               {results.length === 0 && (
                 <p style={{ margin: 0, color: 'var(--text-dim)', fontSize: '13px' }}>
-                  Nenhum resultado encontrado.
+                  Nenhum resultado.
                 </p>
               )}
             </div>
           </div>
         )}
 
-        {activeTab === 'filters' && (
-          <div id="mobile-filters-panel" className="mobile-filters-panel" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {TYPE_FILTER_OPTIONS.map(option => (
-              <MobileFilterButton
-                key={option.id}
-                label={option.label}
-                count={countNodesByTypes(nodes, option.types)}
-                onClick={() => applyTypeFilter([...option.types])}
-              />
-            ))}
+        {activeTab === 'library' && (
+          <div id="mobile-library-panel" className="mobile-library-panel" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button
+                className="bm-soft-button"
+                onClick={() => { /* Not implemented in mobile view */ }}
+                type="button"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '10px',
+                }}
+              >
+                <Download size={15} />
+                <span>Exportar</span>
+              </button>
+              <label
+                className="bm-soft-button"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '10px',
+                  cursor: 'pointer',
+                  margin: 0,
+                }}
+              >
+                <Upload size={15} />
+                <span>Importar</span>
+                <input
+                  type="file"
+                  accept=".json"
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span className="bm-section-title" style={{ fontSize: '11px' }}>Sincronização em Nuvem (Gist)</span>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <input
+                  type="password"
+                  placeholder="GitHub PAT Token"
+                  value={githubToken || ''}
+                  onChange={(e) => setGithubToken(e.target.value)}
+                  className="bm-control"
+                  style={{ flex: 1, padding: '8px 10px', fontSize: '13px', minWidth: 0 }}
+                />
+                <button
+                  className="bm-primary-button"
+                  onClick={() => syncCloud()}
+                  disabled={!githubToken || isSyncing}
+                  type="button"
+                  title="Sincronizar Nuvem"
+                  style={{ opacity: (!githubToken || isSyncing) ? 0.55 : 1, padding: '0 12px', width: 'auto' }}
+                >
+                  <Cloud size={16} />
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
         {activeTab === 'settings' && (
-          <div id="mobile-settings-panel" className="mobile-settings-panel" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div className="mobile-setting-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-mut)' }}>Tema</span>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                <button
-                  id="mobile-theme-light"
-                  onClick={() => updateSettings({ theme: 'mesh-light' })}
-                  style={mobileIconButton(getThemeMode(settings.theme) === 'light')}
-                >
-                  <Sun size={14} />
-                </button>
-                <button
-                  id="mobile-theme-dark"
-                  onClick={() => updateSettings({ theme: 'mesh-dark' })}
-                  style={mobileIconButton(getThemeMode(settings.theme) === 'dark')}
-                >
-                  <Moon size={14} />
-                </button>
+          <div id="mobile-settings-panel" className="mobile-settings-panel" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span className="bm-section-title">Tema Visual</span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                {THEME_OPTIONS.map(option => {
+                  const active = normalizeTheme(settings.theme) === option.id;
+                  const ModeIcon = option.ModeIcon;
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => updateSettings({ theme: option.id })}
+                      type="button"
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '1',
+                        borderRadius: '12px',
+                        background: getThemePreview(option.id),
+                        boxShadow: active ? '0 0 0 3px var(--bg-panel), 0 0 0 5px var(--accent-primary)' : '0 2px 5px var(--shadow-light)',
+                        border: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 0,
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      <div style={{
+                        background: 'var(--bg-overlay-6)',
+                        borderRadius: '50%',
+                        padding: '6px',
+                        display: 'flex',
+                        color: '#ffffff',
+                        backdropFilter: 'blur(2px)'
+                      }}>
+                        <ModeIcon size={16} />
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="mobile-setting-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-mut)' }}>Animacoes</span>
-              <select
-                id="mobile-animation-level"
-                value={settings.animationLevel}
-                onChange={event => updateSettings({ animationLevel: event.target.value as AnimationLevel })}
-                style={{
-                  background: 'var(--border-6)',
-                  border: '1px solid var(--border-10)',
-                  borderRadius: '8px',
-                  color: 'var(--text-sec)',
-                  fontSize: '12px',
-                  padding: '7px 10px',
-                }}
-              >
-                <option value="full">Completas</option>
-                <option value="reduced">Simplificadas</option>
-                <option value="none">Desativadas</option>
-              </select>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', borderTop: '1px solid var(--border-6)', paddingTop: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="bm-body-text" style={{ fontSize: '13px' }}>Animações</span>
+                <select
+                  className="bm-control"
+                  value={settings.animationLevel}
+                  onChange={event => updateSettings({ animationLevel: event.target.value as AnimationLevel })}
+                  style={{ padding: '6px 10px', fontSize: '13px' }}
+                >
+                  <option value="full">Completas</option>
+                  <option value="reduced">Simples</option>
+                  <option value="none">Nenhuma</option>
+                </select>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="bm-body-text" style={{ fontSize: '13px' }}>Partículas e Efeitos</span>
+                <button
+                  className="panel-toggle"
+                  onClick={() => updateSettings({
+                    animationLevel: settings.animationLevel === 'none' ? 'full' : 'none',
+                  })}
+                  type="button"
+                  style={{
+                    width: '42px',
+                    height: '24px',
+                    borderRadius: '999px',
+                    background: settings.animationLevel !== 'none' ? 'var(--accent-primary)' : 'var(--border-10)',
+                    border: '1px solid var(--border-15)',
+                    position: 'relative',
+                    transition: 'background 0.2s',
+                  }}
+                >
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: settings.animationLevel !== 'none' ? '22px' : '3px',
+                      width: '16px',
+                      height: '16px',
+                      borderRadius: '50%',
+                      background: 'var(--text-white)',
+                      transition: 'left 0.2s',
+                    }}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -512,43 +659,4 @@ function MobileNodeButton({ node, onSelect }: { node: TimelineNode; onSelect: ()
       <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>{node.date_display}</span>
     </button>
   );
-}
-
-function MobileFilterButton({ label, count, onClick }: { label: string; count: number; onClick: () => void }) {
-  return (
-    <button
-      className="mobile-filter-button"
-      onClick={onClick}
-      style={{
-        width: '100%',
-        padding: '12px',
-        borderRadius: '10px',
-        border: '1px solid var(--border-7)',
-        background: 'var(--border-4)',
-        color: 'var(--text-main)',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <span style={{ fontSize: '13px', fontWeight: 650 }}>{label}</span>
-      <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>{count}</span>
-    </button>
-  );
-}
-
-function mobileIconButton(active: boolean): CSSProperties {
-  return {
-    width: '34px',
-    height: '30px',
-    borderRadius: '8px',
-    border: active ? '1px solid var(--border-15)' : '1px solid var(--border-8)',
-    background: active ? 'var(--border-10)' : 'var(--border-4)',
-    color: active ? 'var(--text-main)' : 'var(--text-dim)',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  };
 }

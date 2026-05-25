@@ -1,5 +1,5 @@
 import type React from 'react';
-import { Filter, LayoutDashboard, Search, Plus, Settings } from 'lucide-react';
+import { Database, LayoutDashboard, Search, Plus, Settings } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab:  string;
@@ -18,7 +18,7 @@ const TABS: BottomTab[] = [
   { id: 'timeline',   icon: LayoutDashboard, label: 'Linha do Tempo' },
   { id: 'search',     icon: Search,          label: 'Busca' },
   { id: 'new',        icon: Plus,            label: 'Nova Nota',  isAction: true },
-  { id: 'filters',    icon: Filter,          label: 'Filtros' },
+  { id: 'library',    icon: Database,        label: 'Biblioteca' },
   { id: 'settings',   icon: Settings,        label: 'Config.' },
 ];
 
