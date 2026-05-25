@@ -78,6 +78,14 @@ class TextPool {
     }
     this.active.length = 0;
   }
+
+  clearAll() {
+    this.flush();
+    for (const t of this.pool) {
+      t.destroy();
+    }
+    this.pool.length = 0;
+  }
 }
 
 function trunc(s: string, n: number) {
@@ -201,6 +209,9 @@ export class TimelineEngine {
         // Destroy cached nodes so they rebuild with new text/colors
         this.nodePool.forEach(sp => sp.destroy());
         this.nodePool.clear();
+        // Destroy and clear text pools to fix text colors
+        this.lanePool.clearAll();
+        this.tickPool.clearAll();
       }
       if (state.nodes !== prevState.nodes) {
         let min = -7000;

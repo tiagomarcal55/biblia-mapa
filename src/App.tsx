@@ -558,7 +558,7 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
           <div id="mobile-settings-panel" className="mobile-settings-panel" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span className="bm-section-title">Tema Visual</span>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '6px' }}>
                 {THEME_OPTIONS.map(option => {
                   const active = normalizeTheme(settings.theme) === option.id;
                   const ModeIcon = option.ModeIcon;
@@ -571,9 +571,9 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
                         position: 'relative',
                         width: '100%',
                         aspectRatio: '1',
-                        borderRadius: '12px',
+                        borderRadius: '8px',
                         background: getThemePreview(option.id),
-                        boxShadow: active ? '0 0 0 3px var(--bg-panel), 0 0 0 5px var(--accent-primary)' : '0 2px 5px var(--shadow-light)',
+                        boxShadow: active ? '0 0 0 2px var(--bg-panel), 0 0 0 4px var(--accent-primary)' : '0 2px 5px var(--shadow-light)',
                         border: 'none',
                         display: 'flex',
                         alignItems: 'center',
@@ -585,12 +585,12 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
                       <div style={{
                         background: 'var(--bg-overlay-6)',
                         borderRadius: '50%',
-                        padding: '6px',
+                        padding: '4px',
                         display: 'flex',
                         color: '#ffffff',
                         backdropFilter: 'blur(2px)'
                       }}>
-                        <ModeIcon size={16} />
+                        <ModeIcon size={12} />
                       </div>
                     </button>
                   );
