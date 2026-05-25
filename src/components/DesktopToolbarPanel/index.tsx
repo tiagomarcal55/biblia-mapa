@@ -32,6 +32,11 @@ export function DesktopToolbarPanel({
   const setSearchQuery = useTimelineStore(s => s.setSearchQuery);
   const settings       = useTimelineStore(s => s.settings);
   const updateSettings = useTimelineStore(s => s.updateSettings);
+  const githubToken = useTimelineStore(s => s.githubToken);
+  const setGithubToken = useTimelineStore(s => s.setGithubToken);
+  const syncCloud = useTimelineStore(s => s.syncCloud);
+  const isSyncing = useTimelineStore(s => s.isSyncing);
+  const lastSyncAt = useTimelineStore(s => s.lastSyncAt);
   const importedPackages = useTimelineStore(s => s.importedPackages);
 
   const [panelLeft, setPanelLeft] = useState<string>(() => {
@@ -413,58 +418,6 @@ export function DesktopToolbarPanel({
             </button>
           </DesktopSettingRow>
 
-          <div
-            style={{
-              borderTop: '1px solid var(--border-6)',
-              paddingTop: '12px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}
-          >
-            <span className="bm-section-title">Dados e Backup</span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-              <button
-                id="btn-export-backup"
-                className="bm-soft-button"
-                onClick={handleExport}
-                type="button"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  padding: '8px 10px',
-                }}
-              >
-                <Download size={13} />
-                <span>Exportar</span>
-              </button>
-              <label
-                id="lbl-import-backup"
-                className="bm-soft-button"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  padding: '8px 10px',
-                  cursor: 'pointer',
-                  margin: 0,
-                }}
-              >
-                <Upload size={13} />
-                <span>Importar</span>
-                <input
-                  id="import-backup-file"
-                  type="file"
-                  accept=".json"
-                  onChange={handleImport}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </div>
-          </div>
         </section>
       )}
 
@@ -516,12 +469,122 @@ export function DesktopToolbarPanel({
             ))}
           </div>
 
+          <div
+            style={{
+              borderTop: '1px solid var(--border-6)',
+              paddingTop: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
+            <span className="bm-section-title">Meus Eventos Customizados</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '150px', overflowY: 'auto' }}>
+              {nodes.filter(n => n._isUserEdited).length === 0 && (
+                <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>Nenhum evento modificado.</span>
+              )}
+              {nodes.filter(n => n._isUserEdited).map(n => (
+                <button
+                  key={n.id}
+                  onClick={() => {
+                    useTimelineStore.getState().selectNode(n.id);
+                    window.dispatchEvent(new CustomEvent('bm:navigate', { detail: { year: n.date_start, zoom: 0.12 } }));
+                    onClose();
+                  }}
+                  className="bm-nav-button"
+                  type="button"
+                  style={{ justifyContent: 'space-between', padding: '6px 10px', marginBottom: 0 }}
+                >
+                  <span style={{ fontSize: '12px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title}</span>
+                  <span style={{ fontSize: '10px', color: 'var(--accent-primary)' }}>Editar</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderTop: '1px solid var(--border-6)',
+              paddingTop: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
+            <span className="bm-section-title">Dados e Backup</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button
+                id="btn-export-backup"
+                className="bm-soft-button"
+                onClick={handleExport}
+                type="button"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '8px 10px',
+                }}
+              >
+                <Download size={13} />
+                <span>Exportar</span>
+              </button>
+              <label
+                id="lbl-import-backup"
+                className="bm-soft-button"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '8px 10px',
+                  cursor: 'pointer',
+                  margin: 0,
+                }}
+              >
+                <Upload size={13} />
+                <span>Importar</span>
+                <input
+                  id="import-backup-file"
+                  type="file"
+                  accept=".json"
+                  onChange={handleImport}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+              <span className="bm-section-title" style={{ fontSize: '10px' }}>Nuvem (GitHub Gist)</span>
+              <input
+                type="password"
+                placeholder="GitHub Personal Access Token"
+                value={githubToken || ''}
+                onChange={(e) => setGithubToken(e.target.value)}
+                className="bm-control"
+                style={{ padding: '8px 10px', width: '100%', fontSize: '12px' }}
+              />
+              <button
+                className="bm-primary-button"
+                onClick={() => syncCloud()}
+                disabled={!githubToken || isSyncing}
+                style={{ opacity: (!githubToken || isSyncing) ? 0.5 : 1, width: '100%', padding: '8px' }}
+              >
+                {isSyncing ? 'Sincronizando...' : 'Sincronizar Nuvem'}
+              </button>
+              {lastSyncAt && (
+                <span style={{ fontSize: '10px', color: 'var(--text-dim)', textAlign: 'center' }}>
+                  Última vez: {new Date(lastSyncAt).toLocaleString()}
+                </span>
+              )}
+            </div>
+          </div>
+
           <button
             id="desktop-library-clear-filters"
             className="bm-soft-button"
             onClick={clearAllFilters}
             type="button"
-            style={{ padding: '9px 10px', width: '100%' }}
+            style={{ padding: '9px 10px', width: '100%', marginTop: '4px' }}
           >
             <X size={13} />
             <span>Limpar filtros ativos</span>

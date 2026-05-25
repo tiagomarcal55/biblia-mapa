@@ -23,6 +23,7 @@ export interface TimelineNode {
   imported_at?: string;
   description?: string;
   links?: string[];
+  _isUserEdited?: boolean;
 }
 
 export interface NarrativeNode extends TimelineNode {
@@ -79,6 +80,12 @@ export interface TimelineStore {
     renderedNodes: number;
   };
 
+  // Sincronização GitHub
+  githubToken: string | null;
+  gistId: string | null;
+  isSyncing: boolean;
+  lastSyncAt: string | null;
+
   // Actions
   setNodes: (nodes: TimelineNode[]) => void;
   selectNode: (id: string | null) => void;
@@ -94,6 +101,10 @@ export interface TimelineStore {
   setSearchQuery: (q: string) => void;
   updateSettings: (settings: Partial<TimelineStore['settings']>) => void;
   syncPerformance: (metrics: Partial<TimelineStore['performance']>) => void;
+
+  // Sync Actions
+  setGithubToken: (token: string | null) => void;
+  syncCloud: () => Promise<void>;
 
   // Computed
   filteredNodes: TimelineNode[];

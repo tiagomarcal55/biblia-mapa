@@ -9,6 +9,20 @@ export default defineConfig({
     include: ['lucide-react', 'pixi.js', 'zustand', 'gray-matter', 'fflate'],
   },
 
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/pixi.js')) return 'pixi-vendor';
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'react-vendor';
+          if (id.includes('node_modules/lucide-react')) return 'lucide';
+          if (id.includes('node_modules/zustand')) return 'zustand';
+          return undefined;
+        }
+      }
+    }
+  },
+
   server: {
     proxy: {
       // Proxy para o JW.org — remove CORS e X-Frame-Options

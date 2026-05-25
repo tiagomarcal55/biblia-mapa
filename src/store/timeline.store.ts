@@ -6,7 +6,7 @@ type TimelineFilters = TimelineStore['activeFilters'];
 
 export const useTimelineStore = create<TimelineStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       //  Dados 
       nodes:         [],
       narratives:    [],
@@ -41,6 +41,12 @@ export const useTimelineStore = create<TimelineStore>()(
       //  Settings 
       settings: { animationLevel: 'full', theme: 'dark' },
       performance: { fps: 0, renderedNodes: 0 },
+
+      //  Sincronização GitHub
+      githubToken: null,
+      gistId: null,
+      isSyncing: false,
+      lastSyncAt: null,
 
       //  Actions 
 
@@ -88,15 +94,150 @@ export const useTimelineStore = create<TimelineStore>()(
       syncPerformance: (metrics) => set((s) => ({
         performance: { ...s.performance, ...metrics },
       })),
+
+      // Sync Actions
+      setGithubToken: (token) => set({ githubToken: token }),
+      
+      syncCloud: async () => {
+        const { githubToken, gistId, nodes } = get();
+        if (!githubToken) return;
+        
+        set({ isSyncing: true });
+        try {
+          // Identify local custom notes
+          const localCustomNotes = nodes.filter(n => n._isUserEdited);
+          let remoteNotes: TimelineNode[] = [];
+          let currentGistId = gistId;
+
+          // 1. Fetch remote notes if we have a Gist ID
+          if (currentGistId) {
+            const res = await fetch(`https://api.github.com/gists/${currentGistId}`, {
+              headers: {
+                Authorization: `Bearer ${githubToken}`,
+                Accept: 'application/vnd.github.v3+json'
+              }
+            });
+            if (res.ok) {
+              const gist = await res.json();
+              if (gist.files && gist.files['biblia-mapa-sync.json']) {
+                remoteNotes = JSON.parse(gist.files['biblia-mapa-sync.json'].content);
+              }
+            } else if (res.status === 404) {
+              // Gist was deleted
+              currentGistId = null;
+              set({ gistId: null });
+            } else {
+              throw new Error('Falha ao ler o Gist remoto.');
+            }
+          }
+
+          // 2. Merge logic
+          // Create a map of remote notes
+          const remoteMap = new Map(remoteNotes.map(n => [n.id, n]));
+          const currentNodes = [...get().nodes];
+          let stateChanged = false;
+          let contentChanged = false;
+
+          // Inject remote into local
+          for (const rNode of remoteNotes) {
+            const localIdx = currentNodes.findIndex(n => n.id === rNode.id);
+            if (localIdx >= 0) {
+              // If local exists, cloud wins for simplicity (sync is source of truth)
+              if (JSON.stringify(currentNodes[localIdx]) !== JSON.stringify(rNode)) {
+                currentNodes[localIdx] = rNode;
+                stateChanged = true;
+              }
+            } else {
+              currentNodes.push(rNode);
+              stateChanged = true;
+            }
+          }
+
+          // Merge local into remote mapping for saving back
+          for (const lNode of localCustomNotes) {
+            if (!remoteMap.has(lNode.id)) {
+              remoteNotes.push(lNode);
+              contentChanged = true;
+            } else if (JSON.stringify(remoteMap.get(lNode.id)) !== JSON.stringify(lNode)) {
+              // If local differs from remote, we need to push our local updates
+              // (assuming local was updated after last sync. For robust sync we'd need timestamps, 
+              // but for a single-user simple sync this works fine).
+              const idx = remoteNotes.findIndex(n => n.id === lNode.id);
+              remoteNotes[idx] = lNode;
+              contentChanged = true;
+            }
+          }
+
+          // 3. Save to GitHub if we don't have a gist or content changed
+          if (!currentGistId) {
+            // Create new Gist
+            const res = await fetch('https://api.github.com/gists', {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${githubToken}`,
+                Accept: 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                description: 'Bíblia Mapa Sync',
+                public: false,
+                files: {
+                  'biblia-mapa-sync.json': {
+                    content: JSON.stringify(remoteNotes, null, 2)
+                  }
+                }
+              })
+            });
+            if (!res.ok) throw new Error('Falha ao criar o Gist remoto.');
+            const data = await res.json();
+            set({ gistId: data.id });
+          } else if (contentChanged) {
+            // Update existing Gist
+            const res = await fetch(`https://api.github.com/gists/${currentGistId}`, {
+              method: 'PATCH',
+              headers: {
+                Authorization: `Bearer ${githubToken}`,
+                Accept: 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                files: {
+                  'biblia-mapa-sync.json': {
+                    content: JSON.stringify(remoteNotes, null, 2)
+                  }
+                }
+              })
+            });
+            if (!res.ok) throw new Error('Falha ao atualizar o Gist remoto.');
+          }
+
+          // Update Zustand State
+          if (stateChanged) {
+            set((s) => ({ 
+              nodes: currentNodes,
+              filteredNodes: applyAllFilters(currentNodes, s.searchQuery, s.activeFilters)
+            }));
+          }
+          
+          set({ lastSyncAt: new Date().toISOString() });
+        } catch (error) {
+          console.error('Falha na sincronização:', error);
+          alert('Erro na Sincronização. Verifique se o Token do GitHub é válido e possui a permissão "gist".');
+        } finally {
+          set({ isSyncing: false });
+        }
+      },
     }),
     {
       name: 'biblia-mapa-v1',
-      // Persist only user data + settings; exclude UI/derived state
+      // Persist user data + settings + sync tokens
       partialize: (state) => ({
         nodes:            state.nodes,
         settings:         state.settings,
         importedPackages: state.importedPackages,
         activeLanes:      state.activeLanes,
+        githubToken:      state.githubToken,
+        gistId:           state.gistId,
       }),
       // After rehydration, sync filteredNodes from persisted nodes
       onRehydrateStorage: () => (rehydrated) => {

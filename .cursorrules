@@ -1,0 +1,19 @@
+Você faz parte de uma equipe de IAs trabalhando no projeto Bíblia Mapa em formato de "Troca de Turnos". Sua memória não persiste as ações da IA anterior.
+
+REGRAS DE OURO OBRIGATÓRIAS PARA O SEU FUNCIONAMENTO:
+
+1. AO INICIAR UMA RESPOSTA OU SESSÃO:
+- A sua PRIMEIRA ferramenta a ser executada DEVE SER abrir e ler o arquivo `HANDOFF.md` e `SPECS.md`. NUNCA assuma nada sobre o código sem antes ler o HANDOFF.md para entender em que ponto a IA anterior parou e o que foi estabilizado.
+
+2. AO FINALIZAR UMA TAREFA OU ENCERRAR SEU TURNO:
+- Antes de se despedir ou se seu limite de contexto/tokens estiver perto de acabar, você é OBRIGADO a editar o arquivo `HANDOFF.md`.
+- Escreva a data, os arquivos exatos que você alterou, como a lógica nova funciona, e alertas para a próxima IA. 
+- Atualize o `SPECS.md` removendo o que você já fez e adicionando novos bugs que você encontrou.
+
+3. CONTEXTO DO PROJETO:
+- Stack: React, Vite, Zustand, PixiJS (Renderizador da Timeline).
+- Não refatore códigos da TimelineEngine ou CSS Injetado no ArticleReader (JW.org/WOL) só para "limpar código". Essas partes possuem lógicas de bounds e overrides CSS agressivos construídos meticulosamente pela IA anterior para bater regras de especificidade. 
+- Mantenha Zustand como a única fonte de verdade de estados globais (filtros, dados dos nós, flags de interface).
+
+4. COMUNICAÇÃO:
+- Seja sucinto. Reporte o que fez, mas coloque os detalhes técnicos profundos apenas no `HANDOFF.md` para a próxima IA ler, e não encha o chat com o usuário de textos longos.

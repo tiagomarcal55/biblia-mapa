@@ -44,14 +44,32 @@ export default function App() {
       if (currentNodes.length === 0) {
         setNodes(defaultNodes);
       } else {
-        // Keep all current user nodes, and merge any new default nodes that do not exist by ID
-        const currentIds = new Set(currentNodes.map(n => n.id));
-        const merged = [...currentNodes];
+        const userNodesMap = new Map(currentNodes.map(n => [n.id, n]));
+        const merged: typeof defaultNodes = [];
+
+        // 1. Process default official nodes
         for (const dn of defaultNodes) {
-          if (!currentIds.has(dn.id)) {
+          const userNode = userNodesMap.get(dn.id);
+          if (userNode) {
+            if (userNode._isUserEdited) {
+              // Deep merge: keep all user fields, but inherit any new fields from official schema
+              merged.push({ ...dn, ...userNode });
+            } else {
+              // User hasn't edited it, so official dataset fully wins (auto-upgrade)
+              merged.push(dn);
+            }
+            userNodesMap.delete(dn.id);
+          } else {
+            // New official node not present in cache
             merged.push(dn);
           }
         }
+
+        // 2. Add remaining custom nodes created by user (e.g., USR-xxx)
+        for (const un of userNodesMap.values()) {
+          merged.push(un);
+        }
+
         setNodes(merged);
         finalNodes = merged;
       }

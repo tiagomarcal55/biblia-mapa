@@ -198,6 +198,7 @@ export function Editor({ node, onClose }: EditorProps) {
       date_start:        dStart,
       date_end:          dEnd,
       date_precision:    toNodeDatePrecision(dateStart.precision),
+      _isUserEdited:     true,
       date_display:      display,
       uncertainty_years: dateStart.uncertainty,
       importance,
