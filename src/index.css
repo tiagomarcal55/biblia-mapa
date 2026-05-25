@@ -51,6 +51,7 @@
   --shadow-glow: rgba(245, 158, 11, 0.2);
   --bg-toolbar: rgba(17, 24, 39, 0.6);
   --shadow-light: rgba(0, 0, 0, 0.3);
+  --timeline-gradient: linear-gradient(to top, rgba(3, 7, 18, 0.95) 0%, rgba(3, 7, 18, 0.8) 40%, rgba(3, 7, 18, 0) 100%);
 }
 
 [data-theme='mesh-light'],
@@ -97,6 +98,7 @@
   --shadow-glow: rgba(245, 158, 11, 0.1);
   --bg-toolbar: rgba(255, 255, 255, 0.6);
   --shadow-light: rgba(0, 0, 0, 0.08);
+  --timeline-gradient: linear-gradient(to top, rgba(243, 244, 246, 0.95) 0%, rgba(243, 244, 246, 0.8) 40%, rgba(243, 244, 246, 0) 100%);
 }
 
 [data-theme='cartography-dark'] {
@@ -140,6 +142,7 @@
   --shadow-glow: rgba(216, 180, 93, 0.18);
   --bg-toolbar: rgba(8, 19, 27, 0.62);
   --shadow-light: rgba(0, 0, 0, 0.32);
+  --timeline-gradient: linear-gradient(to top, rgba(7, 16, 22, 0.95) 0%, rgba(7, 16, 22, 0.8) 40%, rgba(7, 16, 22, 0) 100%);
 }
 
 [data-theme='cartography-light'] {
@@ -183,6 +186,7 @@
   --shadow-glow: rgba(183, 121, 31, 0.12);
   --bg-toolbar: rgba(255, 255, 250, 0.64);
   --shadow-light: rgba(24, 50, 38, 0.10);
+  --timeline-gradient: linear-gradient(to top, rgba(238, 243, 234, 0.95) 0%, rgba(238, 243, 234, 0.8) 40%, rgba(238, 243, 234, 0) 100%);
 }
 
 [data-theme='papyrus-dark'] {
@@ -226,6 +230,7 @@
   --shadow-glow: rgba(216, 160, 61, 0.18);
   --bg-toolbar: rgba(29, 22, 14, 0.64);
   --shadow-light: rgba(0, 0, 0, 0.35);
+  --timeline-gradient: linear-gradient(to top, rgba(18, 13, 8, 0.95) 0%, rgba(18, 13, 8, 0.8) 40%, rgba(18, 13, 8, 0) 100%);
 }
 
 [data-theme='papyrus-light'] {

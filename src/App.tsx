@@ -142,6 +142,19 @@ export default function App() {
         }}
       >
         <Canvas />
+        <div
+          id="timeline-gradient-overlay"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '260px',
+            background: 'var(--timeline-gradient)',
+            pointerEvents: 'none',
+            zIndex: 10,
+          }}
+        />
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}

@@ -510,7 +510,7 @@ export class TimelineEngine {
     const text  = tag ? tag.replace(/-/g, ' ').toUpperCase() : 'LINHA DO TEMPO';
     const t = getThemeMode(useTimelineStore.getState().settings.theme);
     const color = tag ? 0x6366f1 : THEME_COLORS[t].laneLblMain;
-    this.lanePool.get(text, this.timelineAxisLeft + 4, y - 14, {
+    this.lanePool.get(text, this.timelineAxisLeft + 4, y - 26, {
       fontSize: 9, fontWeight: 'bold', fill: color,
       fontFamily: 'Inter, sans-serif', letterSpacing: 1,
     });
@@ -717,7 +717,7 @@ export class TimelineEngine {
   private get laneY() {
     // Leave space for minimap + bottom margin above it
     return window.innerWidth < 768
-      ? this.camera.screenH - 150
+      ? this.camera.screenH - 200
       : this.camera.screenH - 120;
   }
 }
