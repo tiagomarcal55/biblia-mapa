@@ -475,6 +475,9 @@ export class TimelineEngine {
       return n.date_end >= visLeft - buffer && n.date_start <= visRight + buffer;
     });
 
+    const t = getThemeMode(useTimelineStore.getState().settings.theme);
+    const labelColor = THEME_COLORS[t].nodeTitle;
+
     for (const p of periods) {
       const x1   = this.camera.worldToScreenX(p.date_start);
       const x2   = this.camera.worldToScreenX(p.date_end);
@@ -484,11 +487,11 @@ export class TimelineEngine {
       g.rect(x1, laneY - 4, barW, 8);
       g.fill({ color: col, alpha: 0.3 });
       g.rect(x1, laneY - 4, barW, 8);
-      g.stroke({ color: col, width: 1, alpha: 0.6 });
+      g.stroke({ color: col, width: 2, alpha: 0.8 });
 
       if (barW > 70 && scale >= 0.1) {
         this.lanePool.get(trunc(p.title, Math.floor(barW / PX_PER_CHAR)), x1 + 5, laneY - 7, {
-          fontSize: 9, fill: 0xc7d2fe, fontFamily: 'Inter, sans-serif',
+          fontSize: 9, fill: labelColor, fontFamily: 'Inter, sans-serif',
         });
       }
     }
@@ -510,7 +513,7 @@ export class TimelineEngine {
     const text  = tag ? tag.replace(/-/g, ' ').toUpperCase() : 'LINHA DO TEMPO';
     const t = getThemeMode(useTimelineStore.getState().settings.theme);
     const color = tag ? 0x6366f1 : THEME_COLORS[t].laneLblMain;
-    this.lanePool.get(text, this.timelineAxisLeft + 4, y - 26, {
+    this.lanePool.get(text, this.timelineAxisLeft + 4, y - 56, {
       fontSize: 9, fontWeight: 'bold', fill: color,
       fontFamily: 'Inter, sans-serif', letterSpacing: 1,
     });
