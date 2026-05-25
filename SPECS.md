@@ -59,12 +59,12 @@ Regras locais de arquitetura:
 - Evitar duplicar acoes entre toolbar, footer e paineis.
 - Manter a geometria desktop baseada em `--bm-detail-panel-left`.
 - Manter `#minimap-track`, `#minimap-viewport`, `#canvas-container` e `#side-panel` como ids estaveis.
+- **Nao alterar** o mecanismo de Smart Merge no `App.tsx` (baseado em `_isUserEdited: true`), ele protege as notas do usuario.
+- A sincronizacao oficial (Cloud Sync) do aplicativo eh estritamente Serverless usando **GitHub Gists (PAT Token)**; nao force migracoes para Supabase ou Firebase.
 
 ## Pendencias Recomendadas
 
 1. Converter mais dados fallback para markdown real em `content/`.
-2. Adicionar code splitting para reduzir o bundle principal.
-3. Refinar a biblioteca local aberta pelo avatar, principalmente busca/organizacao/importacao.
 4. Revisar responsividade do SidePanel em larguras intermediarias.
 5. Criar testes automatizados para layout critico:
    - painel fechado
@@ -72,8 +72,6 @@ Regras locais de arquitetura:
    - painel redimensionado
    - minimap navegando
    - zoom/drag respeitando painel direito
-6. Revisar encoding dos textos que aparecem corrompidos em alguns arquivos antigos, sem misturar essa limpeza com mudancas funcionais.
-7. Avaliar persistencia de notas criadas/editadas e fluxo real de exportacao/importacao.
 
 ## Nao Pendentes no Momento
 
@@ -84,4 +82,8 @@ Regras locais de arquitetura:
 - SidePanel direito redimensionavel.
 - Minimap centralizado na area util.
 - Minimap como controle de navegacao.
+- Persistencia de notas com Smart Merge.
+- Code Splitting no Vite configurado.
+- Limpeza de Encoding da base de dados.
+- Sincronizacao Nuvem multiplataforma (GitHub Gist) em `DesktopToolbarPanel`.
 - Build e lint.

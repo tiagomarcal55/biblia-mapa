@@ -12,7 +12,7 @@ O aplicativo agora atingiu um estado de estabilidade técnica para deploy final.
 - O painel de navegação móvel (`BottomNav` e `MobileTabSheet`) já funciona corretamente. A arquitetura de interface está **consolidada**, e os componentes legados de "mockups sem função" foram expurgados.
 - Se for iniciar um novo sprint de funcionalidades, **não** reconstrua o Sidebar esquerdo. O layout principal agora se concentra na Toolbar superior que abre gavetas descendentes (`DesktopToolbarPanel`).
 - **NÃO** altere a lógica de carregamento no `App.tsx` (linhas 37 a 60) a menos que tenha instruções explícitas do usuário para alterar a engine de persistência, pois o *Spread Operator* faz o deep merge perfeito de nós originais e editados pelo usuário.
-- Sinta-se à vontade para seguir para estratégias de banco de dados real se o usuário pedir (Supabase/Firebase/Prisma).
+- **Sincronização Nuvem Oficial:** Foi implementada uma arquitetura Serverless baseada em **GitHub Gists (via PAT Token)** que mora em `DesktopToolbarPanel`. O usuário loga com o Token e a função `syncCloud()` no Zustand faz o merge. **NÃO migre** para Supabase/Firebase, pois o usuário deseja soberania de dados 100% gratuita.
 
 ## Tarefas em Aberto (`SPECS.md`)
 O `SPECS.md` foi exaurido. O projeto está tecnicamente completo dentro do escopo estabelecido. A próxima fase deve ser a adição massiva de eventos bíblicos via interface.
