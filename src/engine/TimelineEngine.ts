@@ -60,7 +60,13 @@ class TextPool {
     if (!t) {
       t = new Text({ text: '', style: new TextStyle(style as TextStyle) });
     } else {
-      Object.assign(t.style, style);
+      // Only apply changed style properties to avoid expensive texture recreation
+      for (const key in style) {
+        const k = key as keyof Partial<TextStyle>;
+        if ((t.style as any)[k] !== style[k]) {
+          (t.style as any)[k] = style[k];
+        }
+      }
     }
     t.text = text;
     t.x = x; t.y = y;
@@ -466,10 +472,13 @@ export class TimelineEngine {
     if (!tag) return;
     const g = this.bgLayer;
     const sbw = this.timelineAxisLeft;
+    const t = getThemeMode(useTimelineStore.getState().settings.theme);
+    const bgColor = t === 'dark' ? 0x1e1b4b : 0xeef2ff; // Indigo-50
+    const strokeColor = t === 'dark' ? 0x312e81 : 0xa5b4fc; // Indigo-300
     g.rect(sbw, y - 42, sw - sbw, 84);
-    g.fill({ color: 0x1e1b4b, alpha: 0.15 });
+    g.fill({ color: bgColor, alpha: t === 'dark' ? 0.15 : 0.4 });
     g.moveTo(sbw, y - 42); g.lineTo(sw, y - 42);
-    g.stroke({ color: 0x312e81, width: 1, alpha: 0.3 });
+    g.stroke({ color: strokeColor, width: 1, alpha: t === 'dark' ? 0.3 : 0.6 });
   }
 
   //  PERIOD BARS 
@@ -523,7 +532,7 @@ export class TimelineEngine {
   private drawLaneLabel(y: number, tag: string | null) {
     const text  = tag ? tag.replace(/-/g, ' ').toUpperCase() : 'LINHA DO TEMPO';
     const t = getThemeMode(useTimelineStore.getState().settings.theme);
-    const color = tag ? 0x6366f1 : THEME_COLORS[t].laneLblMain;
+    const color = tag ? (t === 'dark' ? 0x6366f1 : 0x4f46e5) : THEME_COLORS[t].laneLblMain;
     this.lanePool.get(text, this.timelineAxisLeft + 4, y - 56, {
       fontSize: 9, fontWeight: 'bold', fill: color,
       fontFamily: 'Inter, sans-serif', letterSpacing: 1,
