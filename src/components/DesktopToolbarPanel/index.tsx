@@ -237,7 +237,7 @@ export function DesktopToolbarPanel({
             </strong>
           </div>
 
-          <div id="desktop-type-filter-list" style={{ display: 'grid', gap: '7px' }}>
+          <div id="desktop-type-filter-list" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
             {TYPE_FILTER_OPTIONS.map(item => {
               const Icon = TYPE_ICONS[item.id as keyof typeof TYPE_ICONS] ?? Filter;
               const active = isActiveType(item.types);
@@ -252,14 +252,16 @@ export function DesktopToolbarPanel({
                   type="button"
                   style={{
                     marginBottom: 0,
+                    padding: '6px 8px',
                     justifyContent: 'space-between',
                   }}
+                  title={item.label}
                 >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <Icon size={15} />
-                    <span>{item.label}</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                    <Icon size={13} style={{ flexShrink: 0 }} />
+                    <span style={{ fontSize: '11px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item.label}</span>
                   </span>
-                  <span style={{ color: 'var(--text-dim)', fontSize: '11px' }}>
+                  <span style={{ color: 'var(--text-dim)', fontSize: '10px' }}>
                     {countNodesByTypes(nodes, item.types)}
                   </span>
                 </button>
@@ -272,18 +274,19 @@ export function DesktopToolbarPanel({
             style={{
               borderTop: '1px solid var(--border-6)',
               paddingTop: '12px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '8px',
             }}
           >
-            <DesktopSettingRow label="Importancia minima">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span className="bm-body-text" style={{ fontSize: '11px' }}>Importância</span>
               <select
                 id="desktop-importance-filter"
                 className="bm-control"
                 value={activeFilters.importanceMin}
                 onChange={event => setFilter('importanceMin', Number(event.target.value))}
-                style={{ padding: '6px 9px', cursor: 'pointer' }}
+                style={{ padding: '4px 6px', fontSize: '11px', cursor: 'pointer' }}
               >
                 <option value={1}>Todas</option>
                 <option value={5}>5+</option>
@@ -291,21 +294,22 @@ export function DesktopToolbarPanel({
                 <option value={9}>9+</option>
                 <option value={10}>10</option>
               </select>
-            </DesktopSettingRow>
+            </div>
 
-            <DesktopSettingRow label="Origem">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span className="bm-body-text" style={{ fontSize: '11px' }}>Origem</span>
               <select
                 id="desktop-source-filter"
                 className="bm-control"
                 value={activeFilters.sourceFilter}
                 onChange={event => setFilter('sourceFilter', event.target.value as 'all' | 'mine' | 'imported')}
-                style={{ padding: '6px 9px', cursor: 'pointer' }}
+                style={{ padding: '4px 6px', fontSize: '11px', cursor: 'pointer' }}
               >
                 <option value="all">Todas</option>
                 <option value="mine">Minhas</option>
                 <option value="imported">Importadas</option>
               </select>
-            </DesktopSettingRow>
+            </div>
           </div>
 
           <div
@@ -354,19 +358,16 @@ export function DesktopToolbarPanel({
           className="bm-panel-section"
           style={{ borderBottom: 'none', display: 'flex', flexDirection: 'column', gap: '14px' }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              <span className="bm-section-title">Tema visual</span>
-              <span className="bm-body-text" style={{ fontSize: '11px', color: 'var(--text-dimmer)' }}>
-                Troque background, textura e contraste em tempo real.
-              </span>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <span className="bm-section-title">Tema visual</span>
             <div
               id="desktop-theme-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
+                gridTemplateColumns: 'repeat(6, 1fr)',
                 gap: '8px',
+                paddingTop: '4px',
+                paddingBottom: '8px',
               }}
             >
               {THEME_OPTIONS.map(option => (
@@ -380,54 +381,59 @@ export function DesktopToolbarPanel({
             </div>
           </div>
 
-          <DesktopSettingRow label="Animacoes">
-            <select
-              id="desktop-animation-level"
-              className="bm-control"
-              value={settings.animationLevel}
-              onChange={event => updateSettings({ animationLevel: event.target.value as AnimationLevel })}
-              style={{ padding: '6px 9px', cursor: 'pointer' }}
-            >
-              <option value="full">Completas</option>
-              <option value="reduced">Simples</option>
-              <option value="none">Sem animacao</option>
-            </select>
-          </DesktopSettingRow>
-
-          <DesktopSettingRow label="Efeitos">
-            <button
-              id="desktop-effects-toggle"
-              className="panel-toggle"
-              onClick={() => updateSettings({
-                animationLevel: settings.animationLevel === 'none' ? 'full' : 'none',
-              })}
-              type="button"
-              aria-pressed={settings.animationLevel !== 'none'}
-              style={{
-                width: '38px',
-                height: '22px',
-                borderRadius: '999px',
-                background: settings.animationLevel !== 'none' ? 'var(--accent-primary)' : 'var(--border-10)',
-                border: '1px solid var(--border-15)',
-                position: 'relative',
-                cursor: 'pointer',
-                transition: 'background 0.2s',
-              }}
-            >
-              <span
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', borderTop: '1px solid var(--border-6)', paddingTop: '12px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span className="bm-body-text" style={{ fontSize: '11px' }}>Animações</span>
+              <select
+                id="desktop-animation-level"
+                className="bm-control"
+                value={settings.animationLevel}
+                onChange={event => updateSettings({ animationLevel: event.target.value as AnimationLevel })}
+                style={{ padding: '4px 6px', fontSize: '11px', cursor: 'pointer' }}
+              >
+                <option value="full">Completas</option>
+                <option value="reduced">Simples</option>
+                <option value="none">Nenhuma</option>
+              </select>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span className="bm-body-text" style={{ fontSize: '11px' }}>Partículas e Efeitos</span>
+              <button
+                id="desktop-effects-toggle"
+                className="panel-toggle"
+                onClick={() => updateSettings({
+                  animationLevel: settings.animationLevel === 'none' ? 'full' : 'none',
+                })}
+                type="button"
+                aria-pressed={settings.animationLevel !== 'none'}
                 style={{
-                  position: 'absolute',
-                  top: '3px',
-                  left: settings.animationLevel !== 'none' ? '20px' : '3px',
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  background: 'var(--text-white)',
-                  transition: 'left 0.2s',
+                  width: '38px',
+                  height: '22px',
+                  borderRadius: '999px',
+                  background: settings.animationLevel !== 'none' ? 'var(--accent-primary)' : 'var(--border-10)',
+                  border: '1px solid var(--border-15)',
+                  position: 'relative',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                  marginTop: '2px',
                 }}
-              />
-            </button>
-          </DesktopSettingRow>
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '3px',
+                    left: settings.animationLevel !== 'none' ? '20px' : '3px',
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '50%',
+                    background: 'var(--text-white)',
+                    transition: 'left 0.2s',
+                  }}
+                />
+              </button>
+            </div>
+          </div>
 
         </section>
       )}
@@ -529,32 +535,30 @@ export function DesktopToolbarPanel({
                 className="bm-soft-button"
                 onClick={handleExport}
                 type="button"
+                title="Exportar JSON local"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '6px',
-                  padding: '8px 10px',
+                  padding: '6px 8px',
                 }}
               >
-                <Download size={13} />
-                <span>Exportar</span>
+                <Download size={15} />
               </button>
               <label
                 id="lbl-import-backup"
                 className="bm-soft-button"
+                title="Importar JSON local"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '6px',
-                  padding: '8px 10px',
+                  padding: '6px 8px',
                   cursor: 'pointer',
                   margin: 0,
                 }}
               >
-                <Upload size={13} />
-                <span>Importar</span>
+                <Upload size={15} />
                 <input
                   id="import-backup-file"
                   type="file"
@@ -564,27 +568,30 @@ export function DesktopToolbarPanel({
                 />
               </label>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
-              <span className="bm-section-title" style={{ fontSize: '10px' }}>Nuvem (GitHub Gist)</span>
-              <input
-                type="password"
-                placeholder="GitHub Personal Access Token"
-                value={githubToken || ''}
-                onChange={(e) => setGithubToken(e.target.value)}
-                className="bm-control"
-                style={{ padding: '8px 10px', width: '100%', fontSize: '12px' }}
-              />
-              <button
-                id="btn-cloud-sync"
-                className="bm-primary-button"
-                onClick={() => syncCloud()}
-                disabled={!githubToken || isSyncing}
-                type="button"
-                style={{ opacity: (!githubToken || isSyncing) ? 0.55 : 1, width: '100%', padding: '9px 12px' }}
-              >
-                <Cloud size={13} />
-                {isSyncing ? 'Sincronizando...' : 'Sincronizar Nuvem'}
-              </button>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+              <span className="bm-section-title" style={{ fontSize: '10px' }}>Sincronização em Nuvem (Gist)</span>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <input
+                  type="password"
+                  placeholder="GitHub PAT Token"
+                  value={githubToken || ''}
+                  onChange={(e) => setGithubToken(e.target.value)}
+                  className="bm-control"
+                  style={{ flex: 1, padding: '6px 10px', fontSize: '11px', minWidth: 0 }}
+                />
+                <button
+                  id="btn-cloud-sync"
+                  className="bm-primary-button"
+                  onClick={() => syncCloud()}
+                  disabled={!githubToken || isSyncing}
+                  type="button"
+                  title="Sincronizar Nuvem"
+                  style={{ opacity: (!githubToken || isSyncing) ? 0.55 : 1, padding: '0 10px', width: 'auto' }}
+                >
+                  <Cloud size={14} />
+                </button>
+              </div>
               {lastSyncAt && (
                 <span style={{ fontSize: '10px', color: 'var(--text-dim)', textAlign: 'center' }}>
                   Última vez: {new Date(lastSyncAt).toLocaleString()}
@@ -626,28 +633,7 @@ function LibraryMetric({ label, value }: { label: string; value: string }) {
   );
 }
 
-function DesktopSettingRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className="desktop-setting-row"
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '12px',
-      }}
-    >
-      <span className="bm-body-text">{label}</span>
-      {children}
-    </div>
-  );
-}
+
 
 function ThemeCard({
   option,
@@ -659,53 +645,42 @@ function ThemeCard({
   onSelect: () => void;
 }) {
   const preview = getThemePreview(option.id);
-  const Icon = option.Icon;
   const ModeIcon = option.ModeIcon;
 
   return (
     <button
       id={`desktop-theme-${option.id}`}
-      className="bm-soft-button"
       data-active={active}
       onClick={onSelect}
-      title={option.title}
+      title={`${option.title} - ${option.description}`}
       type="button"
       style={{
         position: 'relative',
-        minHeight: '78px',
-        padding: '9px',
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        gap: '8px',
-        textAlign: 'left',
-        background: active ? 'var(--accent-primary-soft)' : 'var(--border-4)',
-        borderColor: active ? 'var(--accent-primary-border)' : 'var(--border-10)',
-        boxShadow: active ? '0 0 0 3px var(--accent-primary-soft)' : '0 2px 10px var(--shadow-light)',
+        width: '36px',
+        height: '36px',
+        borderRadius: '50%',
+        background: preview,
+        boxShadow: active ? '0 0 0 3px var(--bg-panel), 0 0 0 5px var(--accent-primary)' : '0 2px 5px var(--shadow-light)',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0,
+        margin: '0 auto',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
       }}
     >
-      <span
-        aria-hidden="true"
-        style={{
-          height: '24px',
-          borderRadius: '8px',
-          border: '1px solid var(--border-10)',
-          background: preview,
-          overflow: 'hidden',
-        }}
-      />
-      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
-          <Icon size={13} />
-          <span style={{ color: 'var(--text-main)', fontSize: '11px', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {option.title}
-          </span>
-        </span>
-        <ModeIcon size={12} color="var(--text-dim)" />
-      </span>
-      <span style={{ color: 'var(--text-dimmer)', fontSize: '10px', lineHeight: 1.25 }}>
-        {option.description}
-      </span>
+      <div style={{
+        background: 'var(--bg-overlay-6)',
+        borderRadius: '50%',
+        padding: '5px',
+        display: 'flex',
+        color: '#ffffff',
+        backdropFilter: 'blur(2px)'
+      }}>
+        <ModeIcon size={13} />
+      </div>
     </button>
   );
 }
