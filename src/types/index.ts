@@ -1,5 +1,12 @@
 export type NodeType = 'event' | 'character' | 'place' | 'narrative' | 'period';
 export type DatePrecision = 'day' | 'month' | 'year' | 'decade' | 'century' | 'approximate';
+export type ThemeId =
+  | 'mesh-dark'
+  | 'mesh-light'
+  | 'cartography-dark'
+  | 'cartography-light'
+  | 'papyrus-dark'
+  | 'papyrus-light';
 
 export interface TimelineNode {
   id: string;
@@ -71,7 +78,7 @@ export interface TimelineStore {
   // Configs
   settings: {
     animationLevel: 'full' | 'reduced' | 'none';
-    theme: 'dark' | 'light';
+    theme: ThemeId;
   };
 
   // Performance

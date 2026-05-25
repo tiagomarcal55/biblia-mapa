@@ -30,7 +30,7 @@ export function BottomNav({ activeTab, onTab, onNewNote }: BottomNavProps) {
         position: 'fixed',
         bottom: 0, left: 0, right: 0,
         height: '64px',
-        background: 'rgba(6,6,16,0.95)',
+        background: 'var(--bg-panel-solid)',
         backdropFilter: 'blur(20px)',
         borderTop: '1px solid var(--border-8)',
         display: 'flex',
@@ -74,9 +74,13 @@ export function BottomNav({ activeTab, onTab, onNewNote }: BottomNavProps) {
             style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
               padding: '6px 14px',
-              background: 'none', border: 'none', cursor: 'pointer',
+              minWidth: '58px',
+              borderRadius: '10px',
+              background: isActive ? 'var(--border-6)' : 'transparent',
+              border: isActive ? '1px solid var(--border-10)' : '1px solid transparent',
+              cursor: 'pointer',
               color: isActive ? '#fbbf24' : 'var(--text-dimmer)',
-              transition: 'color 0.15s',
+              transition: 'background 0.15s, border-color 0.15s, color 0.15s',
             }}
           >
             <Icon size={20} />

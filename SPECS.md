@@ -87,3 +87,63 @@ Regras locais de arquitetura:
 - Limpeza de Encoding da base de dados.
 - Sincronizacao Nuvem multiplataforma (GitHub Gist) em `DesktopToolbarPanel`.
 - Build e lint.
+
+---
+
+## Theme Engine - Estado em 2026-05-25
+
+### Arquitetura implementada
+
+- O app possui 6 temas globais persistidos em `settings.theme`:
+  - `mesh-dark`
+  - `mesh-light`
+  - `cartography-dark`
+  - `cartography-light`
+  - `papyrus-dark`
+  - `papyrus-light`
+- O tipo oficial fica em `src/types/index.ts` como `ThemeId`.
+- O catalogo dos temas fica em `src/lib/themes.ts`:
+  - `THEME_OPTIONS`
+  - `normalizeTheme()`
+  - `getThemeMode()`
+- `src/main.tsx` aplica o tema persistido no `<html data-theme>` antes do React montar.
+- `src/App.tsx` reaplica o tema quando `settings.theme` muda e usa `var(--app-background)` no `#app-root`.
+- `src/index.css` define os temas por seletor `[data-theme='...']`, manipulando variaveis globais.
+- `src/store/timeline.store.ts` normaliza valores legados `dark` e `light` para `mesh-dark` e `mesh-light`.
+- `src/engine/TimelineEngine.ts` usa `getThemeMode()` para manter somente duas paletas internas da timeline (`dark`/`light`) sem acoplar Pixi aos 6 temas visuais.
+- O canvas Pixi deve permanecer transparente:
+  - `backgroundAlpha: 0`
+  - `setRendererThemeBackground()`
+  - `src/components/Canvas/index.tsx` com `background: transparent`
+
+### UI do seletor
+
+- O seletor visual fica em `src/components/DesktopToolbarPanel/index.tsx`, dentro da aba Configuracoes.
+- Ele usa a grade `#desktop-theme-grid`.
+- Cada card tem id `desktop-theme-${themeId}`.
+- A troca acontece em tempo real com `updateSettings({ theme: option.id })`.
+
+### Estado visual atual
+
+Funcionam bem:
+
+- `cartography-dark`
+- `papyrus-dark`
+
+Pendentes de refinamento visual:
+
+- `mesh-dark`
+- `mesh-light`
+- `cartography-light`
+- `papyrus-light`
+
+Observacao importante: o bug restante nao parece ser de persistencia nem de canvas, porque `cartography-dark` persistiu apos reload e o canvas ficou transparente. O problema restante e provavelmente contraste/opacidade das texturas em `src/index.css`.
+
+### Proxima tarefa recomendada
+
+Refinar somente `src/index.css`:
+
+1. Aumentar contraste dos gradientes Mesh para que nao parecam fundo solido.
+2. Em `cartography-light`, aumentar `stroke-opacity` do SVG topografico ou escurecer a cor do stroke.
+3. Em `papyrus-light`, aumentar a opacidade do grain e talvez adicionar uma segunda camada linear/radial com contraste suave.
+4. Validar cada tema com browser/screenshot apos reload e apos troca em tempo real.

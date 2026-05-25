@@ -75,7 +75,7 @@ export function RelationSearch({ value, onChange, excludeId }: RelationSearchPro
                 alignItems: 'center',
                 gap: '5px',
                 padding: '4px 10px',
-                borderRadius: '6px',
+                borderRadius: '999px',
                 fontSize: '11px',
                 fontWeight: 500,
                 background: isTag ? 'rgba(16,185,129,0.08)' : 'rgba(59,130,246,0.08)',
@@ -87,15 +87,19 @@ export function RelationSearch({ value, onChange, excludeId }: RelationSearchPro
               <span>{rel.label}</span>
               <button
                 type="button"
+                className="bm-icon-button"
                 onClick={() => handleRemove(rel.id, rel.kind)}
                 style={{
-                  background: 'none',
-                  border: 'none',
+                  width: '18px',
+                  height: '18px',
+                  minWidth: '18px',
+                  minHeight: '18px',
+                  background: 'var(--border-4)',
+                  border: '1px solid var(--border-8)',
                   color: 'inherit',
                   cursor: 'pointer',
-                  padding: '2px',
-                  display: 'flex',
-                  opacity: 0.7
+                  padding: 0,
+                  opacity: 0.75
                 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = '1'}
                 onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}

@@ -260,7 +260,9 @@ export function Editor({ node, onClose }: EditorProps) {
           <button
             id="editor-close"
             onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', display: 'flex' }}
+            className="bm-icon-button"
+            type="button"
+            title="Fechar editor"
           >
             <X size={16} />
           </button>
@@ -544,22 +546,28 @@ export function Editor({ node, onClose }: EditorProps) {
                             >
                               <button
                                 type="button"
+                                className="bm-icon-button"
                                 onClick={() => handleMakePrimary(index)}
                                 title={isPrimary ? "Imagem principal" : "Definir como principal"}
                                 style={{
-                                  background: 'none', border: 'none', cursor: 'pointer',
-                                  color: isPrimary ? '#fbbf24' : 'white', display: 'flex'
+                                  background: 'rgba(255,255,255,0.12)',
+                                  border: '1px solid rgba(255,255,255,0.22)',
+                                  cursor: 'pointer',
+                                  color: isPrimary ? '#fbbf24' : 'white',
                                 }}
                               >
                                 <Star size={14} fill={isPrimary ? '#fbbf24' : 'none'} />
                               </button>
                               <button
                                 type="button"
+                                className="bm-icon-button"
                                 onClick={() => handleRemoveImage(index)}
                                 title="Remover"
                                 style={{
-                                  background: 'none', border: 'none', cursor: 'pointer',
-                                  color: '#ef4444', display: 'flex'
+                                  background: 'rgba(239,68,68,0.14)',
+                                  border: '1px solid rgba(239,68,68,0.35)',
+                                  cursor: 'pointer',
+                                  color: '#ef4444',
                                 }}
                               >
                                 <X size={14} />
@@ -631,11 +639,10 @@ export function Editor({ node, onClose }: EditorProps) {
             <button
               id="editor-cancel"
               onClick={onClose}
+              className="bm-soft-button"
+              type="button"
               style={{
-                padding: '8px 18px',
-                background: 'var(--border-5)',
-                border: '1px solid var(--border-10)',
-                borderRadius: '8px', color: 'var(--text-mut)', fontSize: '13px', cursor: 'pointer',
+                padding: '9px 18px',
               }}
             >
               Cancelar
@@ -643,13 +650,12 @@ export function Editor({ node, onClose }: EditorProps) {
             <button
               id="editor-save"
               onClick={handleSave}
+              className="bm-primary-button"
+              type="button"
               style={{
-                padding: '8px 22px',
-                background: `${TYPE_CONFIG[type].color}18`,
-                border: `1px solid ${TYPE_CONFIG[type].color}45`,
-                borderRadius: '8px', color: TYPE_CONFIG[type].color,
-                fontSize: '13px', fontWeight: 700, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '9px 22px',
+                background: `${TYPE_CONFIG[type].color}`,
+                borderColor: `${TYPE_CONFIG[type].color}80`,
               }}
             >
               <Save size={13} />

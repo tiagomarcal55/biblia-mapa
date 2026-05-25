@@ -427,14 +427,14 @@ function PanelContent({
                   <button
                     key={tag}
                     id={`tag-chip-${tag}`}
+                    className="bm-chip"
                     onClick={() => toggleLane(tag)}
                     title={isLane ? 'Desativar lane' : 'Ativar lane paralela'}
                     style={{
-                      padding: '3px 10px', borderRadius: '20px', fontSize: '11px',
                       background: isLane ? 'rgba(99,102,241,0.18)' : 'var(--border-5)',
                       border: isLane ? '1px solid rgba(99,102,241,0.5)' : '1px solid var(--border-7)',
-                      color: isLane ? '#818cf8' : 'var(--text-mut)',
-                      cursor: 'pointer', transition: 'all 0.12s',
+                      color: isLane ? '#818cf8' : 'var(--text-sec)',
+                      cursor: 'pointer',
                     }}
                   >
                     #{tag}
@@ -442,7 +442,7 @@ function PanelContent({
                 );
               })}
             </div>
-            <p style={{ fontSize: '10px', color: '#334155', margin: '6px 0 0', fontStyle: 'italic' }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-dimmer)', margin: '6px 0 0', fontStyle: 'italic' }}>
               Clique em uma tag para criar uma lane paralela na linha do tempo.
             </p>
           </Section>
@@ -451,22 +451,24 @@ function PanelContent({
 
       {/* Footer */}
       <div style={{
-        padding: '10px 16px',
+        padding: '12px 16px',
         borderTop: '1px solid var(--border-5)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        gap: '12px',
       }}>
         <span style={{ fontSize: '10px', color: 'var(--text-dimmer)' }}>ID: {node.id}</span>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           <button
             id="btn-panel-share"
             className="bm-soft-button"
             onClick={handleShare}
+            type="button"
             style={{
               display: 'flex', alignItems: 'center', gap: '5px',
-              padding: '7px 12px',
+              padding: '8px 12px',
               background: copied ? 'rgba(16,185,129,0.12)' : 'var(--border-5)',
               borderColor: copied ? 'rgba(16,185,129,0.35)' : 'var(--border-8)',
-              color: copied ? '#10b981' : 'var(--text-mut)',
+              color: copied ? '#10b981' : 'var(--text-sec)',
             }}
           >
             <Share2 size={11} />
@@ -476,9 +478,10 @@ function PanelContent({
             id="btn-panel-edit-footer"
             className="bm-soft-button"
             onClick={() => onEditNode(node)}
+            type="button"
             style={{
               display: 'flex', alignItems: 'center', gap: '5px',
-              padding: '7px 12px',
+              padding: '8px 12px',
             }}
           >
             <Edit3 size={11} />

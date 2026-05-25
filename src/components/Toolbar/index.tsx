@@ -18,12 +18,18 @@ export function Toolbar({
   return (
     <header
       id="toolbar"
-      className="absolute z-20 pointer-events-none flex items-center justify-center gap-4"
+      className="pointer-events-none"
       style={{
+        position: 'absolute',
+        zIndex: 20,
         left: 0,
         width: 'var(--bm-detail-panel-left)',
         top: '1rem',
         padding: '0 1rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '12px',
         transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
       }}
     >
@@ -31,7 +37,9 @@ export function Toolbar({
         id="search-bar"
         className="pointer-events-auto"
         style={{
-          width: '360px',
+          pointerEvents: 'auto',
+          width: 'clamp(240px, 34vw, 360px)',
+          maxWidth: '42%',
           background: 'var(--bg-toolbar)',
           backdropFilter: 'blur(12px)',
           border: '1px solid var(--border-8)',
@@ -74,7 +82,18 @@ export function Toolbar({
         </kbd>
       </div>
 
-      <div id="toolbar-actions" className="flex items-center gap-2 pointer-events-auto">
+      <div
+        id="toolbar-actions"
+        className="pointer-events-auto"
+        style={{
+          pointerEvents: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          flexShrink: 0,
+        }}
+      >
         <ToolbarButton
           id="btn-toolbar-new-note"
           icon={<Plus size={14} />}
@@ -142,19 +161,15 @@ function ToolbarButton({
       onClick={onClick}
       aria-pressed={active}
       type="button"
+      className="bm-soft-button"
       style={{
-        display: 'flex',
-        alignItems: 'center',
+        display: 'inline-flex',
         gap: '6px',
         padding: '7px 13px',
         background: active ? 'var(--border-10)' : 'var(--bg-toolbar)',
         backdropFilter: 'blur(12px)',
         border: active ? '1px solid var(--border-15)' : '1px solid var(--border-8)',
-        borderRadius: '8px',
         color: active ? 'var(--text-main)' : 'var(--text-sec)',
-        fontSize: '12px',
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
         boxShadow: '0 2px 12px var(--shadow-light)',
       }}
       onMouseEnter={event => (event.currentTarget.style.background = 'var(--border-8)')}

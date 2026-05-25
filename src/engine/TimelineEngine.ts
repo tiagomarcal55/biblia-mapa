@@ -1,6 +1,7 @@
 import { Application, Graphics, Container, Text, TextStyle } from 'pixi.js';
 import { Camera } from './Camera';
 import { useTimelineStore } from '../store/timeline.store';
+import { getThemeMode } from '../lib/themes';
 import type { TimelineNode } from '../types';
 
 //  Constants 
@@ -130,7 +131,7 @@ export class TimelineEngine {
     const w = parent ? parent.clientWidth  : window.innerWidth;
     const h = parent ? parent.clientHeight : window.innerHeight;
 
-    const theme = useTimelineStore.getState().settings.theme || 'dark';
+    const theme = getThemeMode(useTimelineStore.getState().settings.theme);
     
     this.app = new Application();
     await this.app.init({
@@ -138,11 +139,13 @@ export class TimelineEngine {
       width:           w,
       height:          h,
       backgroundColor: THEME_COLORS[theme].bg,
+      backgroundAlpha: 0,
       resolution:      Math.min(window.devicePixelRatio || 1, 2),
       autoDensity:     true,
       antialias:       true,
       preference:      'webgl',
     });
+    this.setRendererThemeBackground();
 
     if (this.destroyed) { try { this.app.destroy(false); } catch { /* Ignore destroy errors during teardown. */ } return; }
 
@@ -194,8 +197,7 @@ export class TimelineEngine {
     this.app.ticker.add(this.onTick);
     this.unsubStore = useTimelineStore.subscribe((state, prevState) => {
       if (state.settings.theme !== prevState.settings.theme) {
-        const t = state.settings.theme || 'dark';
-        this.app.renderer.background.color = THEME_COLORS[t].bg;
+        this.setRendererThemeBackground();
         // Destroy cached nodes so they rebuild with new text/colors
         this.nodePool.forEach(sp => sp.destroy());
         this.nodePool.clear();
@@ -213,6 +215,13 @@ export class TimelineEngine {
     });
 
     this.initialized = true;
+  }
+
+  private setRendererThemeBackground() {
+    if (this.app?.renderer?.background) {
+      (this.app.renderer.background as any).alpha = 0;
+    }
+    this.canvas.style.background = 'transparent';
   }
 
   /** Called by Canvas component's ResizeObserver */
@@ -488,7 +497,7 @@ export class TimelineEngine {
   //  AXIS LINE 
 
   private drawAxisLine(y: number, sw: number, tag: string | null) {
-    const t = useTimelineStore.getState().settings.theme || 'dark';
+    const t = getThemeMode(useTimelineStore.getState().settings.theme);
     const col = tag ? THEME_COLORS[t].axisTag : THEME_COLORS[t].axisMain;
     this.axisLayer.moveTo(this.timelineAxisLeft, y);
     this.axisLayer.lineTo(sw, y);
@@ -499,7 +508,7 @@ export class TimelineEngine {
 
   private drawLaneLabel(y: number, tag: string | null) {
     const text  = tag ? tag.replace(/-/g, ' ').toUpperCase() : 'LINHA DO TEMPO';
-    const t = useTimelineStore.getState().settings.theme || 'dark';
+    const t = getThemeMode(useTimelineStore.getState().settings.theme);
     const color = tag ? 0x6366f1 : THEME_COLORS[t].laneLblMain;
     this.lanePool.get(text, this.timelineAxisLeft + 4, y - 14, {
       fontSize: 9, fontWeight: 'bold', fill: color,
@@ -529,7 +538,7 @@ export class TimelineEngine {
       const sx = this.camera.worldToScreenX(yr);
       if (sx < this.timelineAxisLeft || sx > sw + 1) continue;
       
-      const t = useTimelineStore.getState().settings.theme || 'dark';
+      const t = getThemeMode(useTimelineStore.getState().settings.theme);
       g.moveTo(sx, laneY - 4); g.lineTo(sx, laneY + 12);
       g.stroke({ color: THEME_COLORS[t].axisMain, width: 1 });
 
@@ -611,7 +620,7 @@ export class TimelineEngine {
 
     const ring = new Graphics();
     ring.circle(0, 0, r + 5);
-    const t = useTimelineStore.getState().settings.theme || 'dark';
+    const t = getThemeMode(useTimelineStore.getState().settings.theme);
     ring.stroke({ color: THEME_COLORS[t].ring, width: 1.5, alpha: 0.8 });
     ring.visible = false;
     c.addChild(ring);

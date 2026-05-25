@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { TimelineStore, TimelineNode } from '../types';
+import { normalizeTheme } from '../lib/themes';
 
 type TimelineFilters = TimelineStore['activeFilters'];
 
@@ -39,7 +40,7 @@ export const useTimelineStore = create<TimelineStore>()(
       importedPackages: [],
 
       //  Settings 
-      settings: { animationLevel: 'full', theme: 'dark' },
+      settings: { animationLevel: 'full', theme: 'mesh-dark' },
       performance: { fps: 0, renderedNodes: 0 },
 
       //  Sincronização GitHub
@@ -88,7 +89,11 @@ export const useTimelineStore = create<TimelineStore>()(
       })),
 
       updateSettings: (newSettings) => set((s) => ({
-        settings: { ...s.settings, ...newSettings },
+        settings: {
+          ...s.settings,
+          ...newSettings,
+          theme: normalizeTheme(newSettings.theme ?? s.settings.theme),
+        },
       })),
 
       syncPerformance: (metrics) => set((s) => ({
@@ -243,6 +248,9 @@ export const useTimelineStore = create<TimelineStore>()(
       onRehydrateStorage: () => (rehydrated) => {
         if (rehydrated?.nodes) {
           rehydrated.filteredNodes = rehydrated.nodes;
+        }
+        if (rehydrated?.settings) {
+          rehydrated.settings.theme = normalizeTheme(rehydrated.settings.theme);
         }
       },
     },

@@ -128,10 +128,11 @@ export function Minimap() {
     >
       <button
         id="minimap-prev"
+        className="bm-icon-button"
         type="button"
         title="Voltar na linha do tempo"
         onClick={() => panMinimap(-1)}
-        style={{ color: 'var(--text-dimmer)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex' }}
+        style={{ flexShrink: 0 }}
       >
         <ChevronLeft size={13} />
       </button>
@@ -219,10 +220,11 @@ export function Minimap() {
 
       <button
         id="minimap-next"
+        className="bm-icon-button"
         type="button"
         title="Avancar na linha do tempo"
         onClick={() => panMinimap(1)}
-        style={{ color: 'var(--text-dimmer)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex' }}
+        style={{ flexShrink: 0 }}
       >
         <ChevronRight size={13} />
       </button>

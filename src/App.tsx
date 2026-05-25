@@ -13,6 +13,7 @@ import { useTimelineStore } from './store/timeline.store';
 import { MOCK_BIBLICAL_NODES } from './data/mock-nodes';
 import { loadTimelineIndex }   from './lib/data/parser';
 import { TYPE_FILTER_OPTIONS, countNodesByTypes } from './lib/timeline-filters';
+import { getThemeMode, normalizeTheme } from './lib/themes';
 import { useBreakpoint }       from './hooks/useBreakpoint';
 import { X, Search, Filter, Settings, Sun, Moon } from 'lucide-react';
 import type { TimelineNode } from './types';
@@ -26,7 +27,7 @@ export default function App() {
   const { isMobile } = useBreakpoint();
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme || 'dark');
+    document.documentElement.setAttribute('data-theme', normalizeTheme(theme));
   }, [theme]);
 
   const [editorOpen,      setEditorOpen]      = useState(false);
@@ -120,19 +121,13 @@ export default function App() {
         height: '100dvh',   // dvh = dynamic viewport height (respects mobile browser chrome)
         overflow: 'hidden',
         position: 'relative',
-        background: 'var(--bg-app)',
+        background: 'var(--app-background)',
         fontFamily: "'Inter', system-ui, sans-serif",
         color: 'var(--text-main)',
       }}
     >
       {/* ── Background ──────────────────────────────────────────────────── */}
-      <div id="bg-gradient" style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        background:
-          'radial-gradient(ellipse at 20% 80%, var(--grad-1) 0%, transparent 55%),' +
-          'radial-gradient(ellipse at 80% 15%, var(--grad-2) 0%, transparent 45%),' +
-          'var(--bg-app)',
-      }} />
+      {/* Background is applied to app-root directly */}
 
       {/* ── Canvas ──────────────────────────────────────────────────────── */}
       <div
@@ -452,15 +447,15 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
               <div style={{ display: 'flex', gap: '6px' }}>
                 <button
                   id="mobile-theme-light"
-                  onClick={() => updateSettings({ theme: 'light' })}
-                  style={mobileIconButton(settings.theme === 'light')}
+                  onClick={() => updateSettings({ theme: 'mesh-light' })}
+                  style={mobileIconButton(getThemeMode(settings.theme) === 'light')}
                 >
                   <Sun size={14} />
                 </button>
                 <button
                   id="mobile-theme-dark"
-                  onClick={() => updateSettings({ theme: 'dark' })}
-                  style={mobileIconButton(settings.theme === 'dark')}
+                  onClick={() => updateSettings({ theme: 'mesh-dark' })}
+                  style={mobileIconButton(getThemeMode(settings.theme) === 'dark')}
                 >
                   <Moon size={14} />
                 </button>

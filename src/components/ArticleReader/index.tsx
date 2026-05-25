@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ExternalLink, BookOpen, Loader2, AlertCircle, X, Minus, Plus } from 'lucide-react';
 import { useTimelineStore } from '../../store/timeline.store';
+import { getThemeMode } from '../../lib/themes';
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -12,7 +13,8 @@ interface ArticleReaderProps {
 }
 
 export function ArticleReader({ url, label, autoLoad = true, onClose }: ArticleReaderProps) {
-  const theme = useTimelineStore(s => s.settings.theme) || 'dark';
+  const theme = useTimelineStore(s => s.settings.theme);
+  const themeMode = getThemeMode(theme);
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>(autoLoad ? 'loading' : 'idle');
   const [htmlContent, setHtmlContent] = useState<string>('');
   const [error, setError] = useState('');
@@ -33,20 +35,20 @@ export function ArticleReader({ url, label, autoLoad = true, onClose }: ArticleR
       try {
         const root = iframeRef.current.contentWindow.document.documentElement;
         root.style.setProperty('--reader-font-size', `${fontSize}px`);
-        root.style.setProperty('--reader-text', theme === 'light' ? '#44403c' : '#cbd5e1');
-        root.style.setProperty('--reader-title', theme === 'light' ? '#292524' : '#f3f4f6');
-        root.style.setProperty('--reader-verse', theme === 'light' ? '#b45309' : '#fbbf24');
-        root.style.setProperty('--reader-link', theme === 'light' ? '#0284c7' : '#60a5fa');
-        root.style.setProperty('--reader-player-bg', theme === 'light' ? '#f1f5f9' : '#1e293b');
-        root.style.setProperty('--reader-player-text', theme === 'light' ? '#1e293b' : '#cbd5e1');
-        root.style.setProperty('--reader-player-btn-bg', theme === 'light' ? '#e2e8f0' : '#334155');
-        root.style.setProperty('--reader-player-btn-text', theme === 'light' ? '#0f172a' : '#f8fafc');
-        root.style.setProperty('--reader-border', theme === 'light' ? '#cbd5e1' : '#334155');
+        root.style.setProperty('--reader-text', themeMode === 'light' ? '#44403c' : '#cbd5e1');
+        root.style.setProperty('--reader-title', themeMode === 'light' ? '#292524' : '#f3f4f6');
+        root.style.setProperty('--reader-verse', themeMode === 'light' ? '#b45309' : '#fbbf24');
+        root.style.setProperty('--reader-link', themeMode === 'light' ? '#0284c7' : '#60a5fa');
+        root.style.setProperty('--reader-player-bg', themeMode === 'light' ? '#f1f5f9' : '#1e293b');
+        root.style.setProperty('--reader-player-text', themeMode === 'light' ? '#1e293b' : '#cbd5e1');
+        root.style.setProperty('--reader-player-btn-bg', themeMode === 'light' ? '#e2e8f0' : '#334155');
+        root.style.setProperty('--reader-player-btn-text', themeMode === 'light' ? '#0f172a' : '#f8fafc');
+        root.style.setProperty('--reader-border', themeMode === 'light' ? '#cbd5e1' : '#334155');
       } catch {
         // Cross-origin iframe access can fail while the reader is still usable.
       }
     }
-  }, [fontSize, theme]);
+  }, [fontSize, themeMode]);
 
   const load = useCallback(async (targetUrl: string) => {
     setState('loading');
@@ -236,15 +238,15 @@ export function ArticleReader({ url, label, autoLoad = true, onClose }: ArticleR
             const root = e.currentTarget.contentWindow?.document.documentElement;
             if (root) {
               root.style.setProperty('--reader-font-size', `${fontSize}px`);
-              root.style.setProperty('--reader-text', theme === 'light' ? '#44403c' : '#cbd5e1');
-              root.style.setProperty('--reader-title', theme === 'light' ? '#292524' : '#f3f4f6');
-              root.style.setProperty('--reader-verse', theme === 'light' ? '#b45309' : '#fbbf24');
-              root.style.setProperty('--reader-link', theme === 'light' ? '#0284c7' : '#60a5fa');
-              root.style.setProperty('--reader-player-bg', theme === 'light' ? '#f1f5f9' : '#1e293b');
-              root.style.setProperty('--reader-player-text', theme === 'light' ? '#1e293b' : '#cbd5e1');
-              root.style.setProperty('--reader-player-btn-bg', theme === 'light' ? '#e2e8f0' : '#334155');
-              root.style.setProperty('--reader-player-btn-text', theme === 'light' ? '#0f172a' : '#f8fafc');
-              root.style.setProperty('--reader-border', theme === 'light' ? '#cbd5e1' : '#334155');
+              root.style.setProperty('--reader-text', themeMode === 'light' ? '#44403c' : '#cbd5e1');
+              root.style.setProperty('--reader-title', themeMode === 'light' ? '#292524' : '#f3f4f6');
+              root.style.setProperty('--reader-verse', themeMode === 'light' ? '#b45309' : '#fbbf24');
+              root.style.setProperty('--reader-link', themeMode === 'light' ? '#0284c7' : '#60a5fa');
+              root.style.setProperty('--reader-player-bg', themeMode === 'light' ? '#f1f5f9' : '#1e293b');
+              root.style.setProperty('--reader-player-text', themeMode === 'light' ? '#1e293b' : '#cbd5e1');
+              root.style.setProperty('--reader-player-btn-bg', themeMode === 'light' ? '#e2e8f0' : '#334155');
+              root.style.setProperty('--reader-player-btn-text', themeMode === 'light' ? '#0f172a' : '#f8fafc');
+              root.style.setProperty('--reader-border', themeMode === 'light' ? '#cbd5e1' : '#334155');
             }
           } catch {
             // Cross-origin iframe access can fail while the reader is still usable.
@@ -266,25 +268,25 @@ export function ArticleReader({ url, label, autoLoad = true, onClose }: ArticleR
 
 const smallBtn: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: '4px',
-  padding: '4px 10px', borderRadius: '6px',
+  minHeight: '30px', padding: '6px 10px', borderRadius: '8px',
   background: 'var(--border-5)', border: '1px solid var(--border-10)',
-  color: 'var(--text-mut)', fontSize: '11px', cursor: 'pointer', textDecoration: 'none',
+  color: 'var(--text-sec)', fontSize: '11px', fontWeight: 650, cursor: 'pointer', textDecoration: 'none',
 };
 
 const iconBtnText: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: '6px',
-  padding: '5px 12px',
+  minHeight: '30px', padding: '6px 12px',
   background: 'rgba(16,185,129,0.08)',
   border: '1px solid rgba(16,185,129,0.25)',
-  borderRadius: '7px',
-  color: '#34d399', fontSize: '11px', cursor: 'pointer',
+  borderRadius: '8px',
+  color: '#34d399', fontSize: '11px', fontWeight: 650, cursor: 'pointer',
 };
 
 const iconBtn: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
-  width: '26px', height: '26px', borderRadius: '6px',
-  background: 'none', border: 'none',
-  color: 'var(--text-dimmer)', cursor: 'pointer', textDecoration: 'none',
+  width: '28px', height: '28px', borderRadius: '8px',
+  background: 'var(--border-4)', border: '1px solid var(--border-8)',
+  color: 'var(--text-dim)', cursor: 'pointer', textDecoration: 'none',
 };
 
 const linkStyle: React.CSSProperties = {
@@ -293,7 +295,7 @@ const linkStyle: React.CSSProperties = {
 
 const zoomBtn: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
-  width: '22px', height: '22px',
-  background: 'none', border: 'none',
+  width: '24px', height: '24px',
+  background: 'transparent', border: 'none',
   color: 'var(--text-sec)', cursor: 'pointer',
 }

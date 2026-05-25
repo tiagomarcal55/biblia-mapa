@@ -1,8 +1,10 @@
 import type React from 'react';
 import { useState, useEffect } from 'react';
-import { BookOpen, Clock, Database, Filter, LayoutDashboard, MapPin, Moon, Settings, Sun, Users, X, Download, Upload } from 'lucide-react';
+import { BookOpen, Clock, Cloud, Database, Filter, LayoutDashboard, MapPin, Settings, Users, X, Download, Upload } from 'lucide-react';
 import { useTimelineStore } from '../../store/timeline.store';
 import { countNodesByTypes, TYPE_FILTER_OPTIONS } from '../../lib/timeline-filters';
+import { normalizeTheme, THEME_OPTIONS } from '../../lib/themes';
+import type { ThemeId } from '../../types';
 
 type DesktopPanel = 'filters' | 'settings' | 'library';
 type AnimationLevel = 'full' | 'reduced' | 'none';
@@ -350,24 +352,33 @@ export function DesktopToolbarPanel({
         <section
           id="desktop-settings-panel"
           className="bm-panel-section"
-          style={{ borderBottom: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}
+          style={{ borderBottom: 'none', display: 'flex', flexDirection: 'column', gap: '14px' }}
         >
-          <DesktopSettingRow label="Tema">
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <PanelIconButton
-                active={settings.theme === 'light'}
-                icon={<Sun size={14} />}
-                label="Tema claro"
-                onClick={() => updateSettings({ theme: 'light' })}
-              />
-              <PanelIconButton
-                active={settings.theme === 'dark'}
-                icon={<Moon size={14} />}
-                label="Tema escuro"
-                onClick={() => updateSettings({ theme: 'dark' })}
-              />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span className="bm-section-title">Tema visual</span>
+              <span className="bm-body-text" style={{ fontSize: '11px', color: 'var(--text-dimmer)' }}>
+                Troque background, textura e contraste em tempo real.
+              </span>
             </div>
-          </DesktopSettingRow>
+            <div
+              id="desktop-theme-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '8px',
+              }}
+            >
+              {THEME_OPTIONS.map(option => (
+                <ThemeCard
+                  key={option.id}
+                  option={option}
+                  active={normalizeTheme(settings.theme) === option.id}
+                  onSelect={() => updateSettings({ theme: option.id })}
+                />
+              ))}
+            </div>
+          </div>
 
           <DesktopSettingRow label="Animacoes">
             <select
@@ -493,10 +504,10 @@ export function DesktopToolbarPanel({
                   }}
                   className="bm-nav-button"
                   type="button"
-                  style={{ justifyContent: 'space-between', padding: '6px 10px', marginBottom: 0 }}
+                  style={{ justifyContent: 'space-between', padding: '8px 10px', marginBottom: 0 }}
                 >
                   <span style={{ fontSize: '12px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title}</span>
-                  <span style={{ fontSize: '10px', color: 'var(--accent-primary)' }}>Editar</span>
+                  <span className="bm-chip" style={{ color: 'var(--accent-primary)' }}>Editar</span>
                 </button>
               ))}
             </div>
@@ -564,11 +575,14 @@ export function DesktopToolbarPanel({
                 style={{ padding: '8px 10px', width: '100%', fontSize: '12px' }}
               />
               <button
+                id="btn-cloud-sync"
                 className="bm-primary-button"
                 onClick={() => syncCloud()}
                 disabled={!githubToken || isSyncing}
-                style={{ opacity: (!githubToken || isSyncing) ? 0.5 : 1, width: '100%', padding: '8px' }}
+                type="button"
+                style={{ opacity: (!githubToken || isSyncing) ? 0.55 : 1, width: '100%', padding: '9px 12px' }}
               >
+                <Cloud size={13} />
                 {isSyncing ? 'Sincronizando...' : 'Sincronizar Nuvem'}
               </button>
               {lastSyncAt && (
@@ -635,31 +649,75 @@ function DesktopSettingRow({
   );
 }
 
-function PanelIconButton({
+function ThemeCard({
+  option,
   active,
-  icon,
-  label,
-  onClick,
+  onSelect,
 }: {
+  option: (typeof THEME_OPTIONS)[number];
   active: boolean;
-  icon: React.ReactNode;
-  label: string;
-  onClick: () => void;
+  onSelect: () => void;
 }) {
+  const preview = getThemePreview(option.id);
+  const Icon = option.Icon;
+  const ModeIcon = option.ModeIcon;
+
   return (
     <button
-      className="bm-icon-button"
+      id={`desktop-theme-${option.id}`}
+      className="bm-soft-button"
       data-active={active}
-      onClick={onClick}
-      title={label}
+      onClick={onSelect}
+      title={option.title}
       type="button"
       style={{
-        background: active ? 'var(--border-10)' : 'transparent',
-        borderColor: active ? 'var(--border-15)' : 'transparent',
-        color: active ? 'var(--text-main)' : 'var(--text-dim)',
+        position: 'relative',
+        minHeight: '78px',
+        padding: '9px',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        gap: '8px',
+        textAlign: 'left',
+        background: active ? 'var(--accent-primary-soft)' : 'var(--border-4)',
+        borderColor: active ? 'var(--accent-primary-border)' : 'var(--border-10)',
+        boxShadow: active ? '0 0 0 3px var(--accent-primary-soft)' : '0 2px 10px var(--shadow-light)',
       }}
     >
-      {icon}
+      <span
+        aria-hidden="true"
+        style={{
+          height: '24px',
+          borderRadius: '8px',
+          border: '1px solid var(--border-10)',
+          background: preview,
+          overflow: 'hidden',
+        }}
+      />
+      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+          <Icon size={13} />
+          <span style={{ color: 'var(--text-main)', fontSize: '11px', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {option.title}
+          </span>
+        </span>
+        <ModeIcon size={12} color="var(--text-dim)" />
+      </span>
+      <span style={{ color: 'var(--text-dimmer)', fontSize: '10px', lineHeight: 1.25 }}>
+        {option.description}
+      </span>
     </button>
   );
+}
+
+function getThemePreview(theme: ThemeId) {
+  const previews: Record<ThemeId, string> = {
+    'mesh-dark': 'radial-gradient(circle at 24% 80%, #1d4ed8 0%, transparent 42%), radial-gradient(circle at 82% 18%, #92400e 0%, transparent 40%), #030712',
+    'mesh-light': 'radial-gradient(circle at 24% 80%, #93c5fd 0%, transparent 42%), radial-gradient(circle at 82% 18%, #fcd34d 0%, transparent 40%), #f3f4f6',
+    'cartography-dark': 'repeating-radial-gradient(circle at 70% 35%, rgba(125,160,138,.28) 0 1px, transparent 1px 9px), linear-gradient(135deg, #071016, #10251d)',
+    'cartography-light': 'repeating-radial-gradient(circle at 68% 38%, rgba(84,107,89,.28) 0 1px, transparent 1px 9px), linear-gradient(135deg, #eef3ea, #dbe8d5)',
+    'papyrus-dark': 'radial-gradient(circle at 22% 80%, rgba(216,160,61,.32), transparent 44%), linear-gradient(135deg, #120d08, #2b1d0f)',
+    'papyrus-light': 'radial-gradient(circle at 20% 78%, rgba(161,98,7,.22), transparent 44%), linear-gradient(135deg, #eadbbd, #fff7e5)',
+  };
+  return previews[theme];
 }
