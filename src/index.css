@@ -275,6 +275,7 @@
   --shadow-glow: rgba(161, 98, 7, 0.13);
   --bg-toolbar: rgba(255, 250, 235, 0.68);
   --shadow-light: rgba(64, 38, 14, 0.10);
+  --timeline-gradient: linear-gradient(to top, rgba(255, 247, 229, 0.95) 0%, rgba(255, 247, 229, 0.8) 40%, rgba(255, 247, 229, 0) 100%);
 }
 
 /* Global Reset & Base Styles */

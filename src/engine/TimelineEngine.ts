@@ -25,11 +25,11 @@ const TICK_LABEL_GAP = 46;
 
 const THEME_COLORS = {
   dark: {
-    bg: 0x050510, axisMain: 0x334155, axisTag: 0x3730a3, laneLblMain: 0x334155, tickLbl: 0x64748b,
+    bg: 0x050510, axisMain: 0x334155, axisTag: 0x3730a3, laneLblMain: 0x94a3b8, tickLbl: 0x94a3b8,
     nodeTitle: 0xe2e8f0, nodeTitleHi: 0xfde68a, nodeDate: 0x94a3b8, ring: 0xffffff,
   },
   light: {
-    bg: 0xf8fafc, axisMain: 0x94a3b8, axisTag: 0x6366f1, laneLblMain: 0x64748b, tickLbl: 0x475569,
+    bg: 0xf8fafc, axisMain: 0x94a3b8, axisTag: 0x6366f1, laneLblMain: 0x334155, tickLbl: 0x1e293b,
     nodeTitle: 0x334155, nodeTitleHi: 0xb45309, nodeDate: 0x64748b, ring: 0x000000,
   }
 };

@@ -579,16 +579,15 @@ function MobileTabSheet({ activeTab, onClose }: { activeTab: string; onClose: ()
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: 0,
-                        transition: 'all 0.2s',
+                        transition: 'box-shadow 0.2s, transform 0.1s',
                       }}
                     >
                       <div style={{
-                        background: 'var(--bg-overlay-6)',
+                        background: 'rgba(0,0,0,0.4)',
                         borderRadius: '50%',
                         padding: '4px',
                         display: 'flex',
                         color: '#ffffff',
-                        backdropFilter: 'blur(2px)'
                       }}>
                         <ModeIcon size={12} />
                       </div>
